@@ -1,6 +1,7 @@
 use crate::query::Node;
 use crate::pcre2_pool::PatternPool;
 use crate::pcre2_pool::CompiledPattern;
+use crate::query::parser_rs::{CompareOp, Bound};
 use std::sync::Arc;
 
 /// A compiled representation of a query node. This is intentionally
@@ -13,6 +14,20 @@ pub enum CompiledNode {
         negated: bool,
         field: Option<String>,
         mods: Vec<String>,
+    },
+    Compare {
+        field: Option<String>,
+        op: CompareOp,
+        value: String,
+    },
+    Range {
+        field: Option<String>,
+        low: Bound,
+        high: Bound,
+    },
+    Function {
+        name: String,
+        args: Vec<String>,
     },
     And(Box<CompiledNode>, Box<CompiledNode>),
     Or(Box<CompiledNode>, Box<CompiledNode>),
@@ -118,6 +133,69 @@ impl QueryMatcher {
                 let res = pat.is_match(text);
                 if *negated { !res } else { res }
             }
+            CompiledNode::Compare { field: _, op, value } => {
+                // Try numeric comparison first
+                if let (Ok(lhs), Ok(rhs)) = (parse_number_from_bytes(text), value.parse::<i128>()) {
+                    match op {
+                        CompareOp::Eq => lhs == rhs,
+                        CompareOp::Contains => lhs.to_string().contains(&rhs.to_string()),
+                        CompareOp::Smaller => lhs < rhs,
+                        CompareOp::SmallerEq => lhs <= rhs,
+                        CompareOp::Greater => lhs > rhs,
+                        CompareOp::GreaterEq => lhs >= rhs,
+                    }
+                    } else {
+                    // Fallback to substring/lexicographic comparisons
+                    let s = String::from_utf8_lossy(text);
+                    let sref = s.as_ref();
+                    match op {
+                        CompareOp::Eq => sref == value.as_str(),
+                        CompareOp::Contains => sref.contains(value.as_str()),
+                        CompareOp::Smaller => sref < value.as_str(),
+                        CompareOp::SmallerEq => sref <= value.as_str(),
+                        CompareOp::Greater => sref > value.as_str(),
+                        CompareOp::GreaterEq => sref >= value.as_str(),
+                    }
+                }
+            }
+            CompiledNode::Range { field: _, low, high } => {
+                // Numeric-aware range check
+                if let Ok(v) = parse_number_from_bytes(text) {
+                    let mut ok = true;
+                    if let Bound::Inclusive(ref s) = low { if let Ok(lv) = s.parse::<i128>() { ok &= v >= lv; } }
+                    if let Bound::Exclusive(ref s) = low { if let Ok(lv) = s.parse::<i128>() { ok &= v > lv; } }
+                    if let Bound::Inclusive(ref s) = high { if let Ok(hv) = s.parse::<i128>() { ok &= v <= hv; } }
+                    if let Bound::Exclusive(ref s) = high { if let Ok(hv) = s.parse::<i128>() { ok &= v < hv; } }
+                    ok
+                } else {
+                    // Lexicographic fallback using UTF-8 text
+                    let s = String::from_utf8_lossy(text);
+                    let sref = s.as_ref();
+                    let mut ok = true;
+                    match low {
+                        Bound::Inclusive(ref l) => ok &= sref >= l.as_str(),
+                        Bound::Exclusive(ref l) => ok &= sref > l.as_str(),
+                        Bound::Unbounded => {}
+                    }
+                    match high {
+                        Bound::Inclusive(ref h) => ok &= sref <= h.as_str(),
+                        Bound::Exclusive(ref h) => ok &= sref < h.as_str(),
+                        Bound::Unbounded => {}
+                    }
+                    ok
+                }
+            }
+            CompiledNode::Function { name, args } => {
+                // Provide a couple of simple function semantics: contains(arg)
+                // and exists(arg) which are both substring checks on the text.
+                if name.eq_ignore_ascii_case("contains") || name.eq_ignore_ascii_case("exists") {
+                    if let Some(a) = args.get(0) {
+                        let s = String::from_utf8_lossy(text);
+                        return s.contains(a.as_str());
+                    }
+                }
+                false
+            }
             CompiledNode::Not(inner) => !self.is_match(inner, text),
             CompiledNode::And(a, b) => self.is_match(a, text) && self.is_match(b, text),
             CompiledNode::Or(a, b) => self.is_match(a, text) || self.is_match(b, text),
@@ -128,6 +206,17 @@ impl QueryMatcher {
     pub fn captures(&self, compiled: &CompiledNode, text: &[u8]) -> Vec<(usize, usize)> {
         match compiled {
             CompiledNode::Leaf { pat, .. } => pat.captures_ranges(text).unwrap_or_default(),
+            CompiledNode::Compare { .. } => vec![],
+            CompiledNode::Range { .. } => vec![],
+                CompiledNode::Function { name, args } => {
+                    if (name.eq_ignore_ascii_case("contains") || name.eq_ignore_ascii_case("exists")) && args.len() >= 1 {
+                        let pat = build_pattern_for_literal(&args[0], &vec![]);
+                        if let Ok(comp) = self.pool.acquire_pcre2(&pat) {
+                            return comp.captures_ranges(text).unwrap_or_default();
+                        }
+                    }
+                    vec![]
+                }
             CompiledNode::Not(inner) => self.captures(inner, text),
             CompiledNode::And(a, b) => {
                 let mut a_caps = self.captures(a, text);
@@ -142,6 +231,12 @@ impl QueryMatcher {
             }
         }
     }
+}
+
+fn parse_number_from_bytes(b: &[u8]) -> Result<i128, std::num::ParseIntError> {
+    let s = String::from_utf8_lossy(b);
+    // accept decimal integers only for now
+    s.trim().parse::<i128>()
 }
 
 fn escape_literal(s: &str) -> String {
