@@ -1,4 +1,6 @@
 use crate::matchers::Matcher;
+use crate::pcre2_backend::Pcre2Compiled;
+use pcre2::Error as Pcre2Error;
 use std::sync::{Arc, Mutex};
 use std::collections::VecDeque;
 
@@ -9,6 +11,11 @@ pub trait CompiledPattern: Send + Sync {
 }
 
 impl CompiledPattern for Matcher {
+    fn is_match(&self, text: &[u8]) -> bool { self.is_match(text) }
+    fn captures_ranges(&self, text: &[u8]) -> Option<Vec<(usize, usize)>> { self.captures_ranges(text) }
+}
+
+impl CompiledPattern for Pcre2Compiled {
     fn is_match(&self, text: &[u8]) -> bool { self.is_match(text) }
     fn captures_ranges(&self, text: &[u8]) -> Option<Vec<(usize, usize)>> { self.captures_ranges(text) }
 }
@@ -36,6 +43,18 @@ impl PatternPool {
         } else {
             factory()
         }
+    }
+
+    /// Convenience: acquire a PCRE2-compiled pattern for `pattern`.
+    /// Compiles a new `Pcre2Compiled` if the pool is empty.
+    pub fn acquire_pcre2(&self, pattern: &str) -> Result<Arc<dyn CompiledPattern>, Pcre2Error> {
+        // try to pop a cached compiled pattern of any type
+        if let Some(p) = self.inner.lock().unwrap().pop_front() {
+            return Ok(p);
+        }
+        // otherwise compile a new PCRE2 pattern
+        let pc = Pcre2Compiled::new(pattern)?;
+        Ok(Arc::new(pc))
     }
 
     /// Return a compiled pattern to the pool for reuse.

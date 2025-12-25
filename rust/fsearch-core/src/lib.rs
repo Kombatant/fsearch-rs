@@ -7,6 +7,8 @@ pub mod query;
 mod search;
 pub mod matchers;
 pub mod pcre2_pool;
+pub mod pcre2_backend;
+pub mod match_engine;
 
 use index::Index;
 use parking_lot::Mutex;
