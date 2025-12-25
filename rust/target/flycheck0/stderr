@@ -3,53 +3,10 @@ warning: virtual workspace defaulting to `resolver = "1"` despite one or more wo
   = note: to keep the current resolver, specify `workspace.resolver = "1"` in the workspace root's manifest
   = note: to use the edition 2021 resolver, specify `workspace.resolver = "2"` in the workspace root's manifest
   = note: for more details see https://doc.rust-lang.org/cargo/reference/resolver.html#resolver-versions
-   0.226859920s  INFO prepare_target{force=false package_id=fsearch-core v0.1.0 (/home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/fsearch-core) target="bench_rust_matcher"}: cargo::core::compiler::fingerprint: fingerprint error for fsearch-core v0.1.0 (/home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/fsearch-core)/Check { test: false }/TargetInner { name: "bench_rust_matcher", doc: true, ..: with_path("/home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/fsearch-core/tools/bench_rust_matcher.rs", Edition2021) }
-   0.226876420s  INFO prepare_target{force=false package_id=fsearch-core v0.1.0 (/home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/fsearch-core) target="bench_rust_matcher"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/target/debug/.fingerprint/fsearch-core-37e85cd809deefcf/bin-bench_rust_matcher`
-
-Caused by:
-    No such file or directory (os error 2)
-
-Stack backtrace:
-   0: <unknown>
-   1: <unknown>
-   2: <unknown>
-   3: <unknown>
-   4: <unknown>
-   5: <unknown>
-   6: <unknown>
-   7: <unknown>
-   8: <unknown>
-   9: <unknown>
-  10: <unknown>
-  11: <unknown>
-  12: <unknown>
-  13: <unknown>
-  14: <unknown>
-  15: __libc_start_main
-  16: <unknown>
-   0.227778152s  INFO prepare_target{force=false package_id=fsearch-core v0.1.0 (/home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/fsearch-core) target="bench_rust_matcher"}: cargo::core::compiler::fingerprint: fingerprint error for fsearch-core v0.1.0 (/home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/fsearch-core)/Check { test: true }/TargetInner { name: "bench_rust_matcher", doc: true, ..: with_path("/home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/fsearch-core/tools/bench_rust_matcher.rs", Edition2021) }
-   0.227785682s  INFO prepare_target{force=false package_id=fsearch-core v0.1.0 (/home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/fsearch-core) target="bench_rust_matcher"}: cargo::core::compiler::fingerprint:     err: failed to read `/home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/target/debug/.fingerprint/fsearch-core-9d6d018486391475/test-bin-bench_rust_matcher`
-
-Caused by:
-    No such file or directory (os error 2)
-
-Stack backtrace:
-   0: <unknown>
-   1: <unknown>
-   2: <unknown>
-   3: <unknown>
-   4: <unknown>
-   5: <unknown>
-   6: <unknown>
-   7: <unknown>
-   8: <unknown>
-   9: <unknown>
-  10: <unknown>
-  11: <unknown>
-  12: <unknown>
-  13: <unknown>
-  14: <unknown>
-  15: __libc_start_main
-  16: <unknown>
+   0.392397956s  INFO prepare_target{force=false package_id=fsearch-core v0.1.0 (/home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/fsearch-core) target="rust_match_bench"}: cargo::core::compiler::fingerprint: stale: changed "/home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/fsearch-core/benches/rust_match_bench.rs"
+   0.392408716s  INFO prepare_target{force=false package_id=fsearch-core v0.1.0 (/home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/fsearch-core) target="rust_match_bench"}: cargo::core::compiler::fingerprint:           (vs) "/home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/target/debug/.fingerprint/fsearch-core-ad67d38676897ee0/dep-test-bench-rust_match_bench"
+   0.392412677s  INFO prepare_target{force=false package_id=fsearch-core v0.1.0 (/home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/fsearch-core) target="rust_match_bench"}: cargo::core::compiler::fingerprint:                FileTime { seconds: 1766684442, nanos: 549617771 } < FileTime { seconds: 1766686950, nanos: 143325136 }
+   0.392943738s  INFO prepare_target{force=false package_id=fsearch-core v0.1.0 (/home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/fsearch-core) target="rust_match_bench"}: cargo::core::compiler::fingerprint: fingerprint dirty for fsearch-core v0.1.0 (/home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/fsearch-core)/Check { test: true }/TargetInner { kind: "bench", name: "rust_match_bench", tested: false, ..: with_path("/home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/fsearch-core/benches/rust_match_bench.rs", Edition2021) }
+   0.392955998s  INFO prepare_target{force=false package_id=fsearch-core v0.1.0 (/home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/fsearch-core) target="rust_match_bench"}: cargo::core::compiler::fingerprint:     dirty: FsStatusOutdated(StaleItem(ChangedFile { reference: "/home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/target/debug/.fingerprint/fsearch-core-ad67d38676897ee0/dep-test-bench-rust_match_bench", reference_mtime: FileTime { seconds: 1766684442, nanos: 549617771 }, stale: "/home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/fsearch-core/benches/rust_match_bench.rs", stale_mtime: FileTime { seconds: 1766686950, nanos: 143325136 } }))
     Checking fsearch-core v0.1.0 (/home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/fsearch-core)
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.51s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.71s
