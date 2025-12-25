@@ -7,11 +7,51 @@
 #include <QString>
 #include <QLabel>
 #include <QDir>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonArray>
+#include <QJsonValue>
+#include <algorithm>
 
 #include <iostream>
 #include <vector>
 
 #include "../fsearch-core/include/fsearch_ffi.h"
+
+static QString applyRangesToHtml(const QString &text, const QJsonArray &rangesArray) {
+    // rangesArray: array of [start,end] integer arrays (character indices)
+    QVector<QPair<int,int>> ranges;
+    for (const QJsonValue &rv : rangesArray) {
+        if (!rv.isArray()) continue;
+        QJsonArray a = rv.toArray();
+        if (a.size() < 2) continue;
+        int s = a.at(0).toInt(-1);
+        int e = a.at(1).toInt(-1);
+        if (s < 0 || e <= s) continue;
+        ranges.append(qMakePair(s, e));
+    }
+    if (ranges.isEmpty()) return text.toHtmlEscaped();
+    // merge & sort
+    std::sort(ranges.begin(), ranges.end(), [](const QPair<int,int>&x,const QPair<int,int>&y){ return x.first < y.first; });
+    QVector<QPair<int,int>> merged;
+    for (auto &r : ranges) {
+        if (merged.isEmpty() || r.first > merged.last().second) merged.append(r);
+        else merged.last().second = std::max(merged.last().second, r.second);
+    }
+    QString out;
+    int pos = 0;
+    for (auto &r : merged) {
+        int s = r.first;
+        int e = r.second;
+        if (s > text.size()) break;
+        if (s > pos) out += text.mid(pos, s-pos).toHtmlEscaped();
+        int len = qMin(e, text.size()) - s;
+        if (len > 0) out += "<b>" + text.mid(s, len).toHtmlEscaped() + "</b>";
+        pos = qMin(e, text.size());
+    }
+    if (pos < text.size()) out += text.mid(pos).toHtmlEscaped();
+    return out;
+}
 
 extern "C" void result_cb(uint64_t id, const char *name, const char *path, uint64_t size, uint64_t mtime, const char *highlights, void *userdata) {
     fprintf(stderr, "result_cb: userdata=%p name=%p path=%p highlights=%p\n", userdata, name, path, highlights);
@@ -21,13 +61,55 @@ extern "C" void result_cb(uint64_t id, const char *name, const char *path, uint6
         fprintf(stderr, "result_cb: list is null\n"); fflush(stderr);
         return;
     }
-    QString text = QString("%1 — %2").arg(QString::fromUtf8(name)).arg(QString::fromUtf8(path));
-    if (highlights && highlights[0] != '\0') {
-        // display highlights JSON in a secondary line for now
-        QString h = QString::fromUtf8(highlights);
-        text += "\n" + h;
+    QString nameStr = QString::fromUtf8(name ? name : "");
+    QString pathStr = QString::fromUtf8(path ? path : "");
+    QString highlightsJson = QString::fromUtf8(highlights ? highlights : "");
+
+    // Try parsing highlights JSON with expected format. We'll accept either:
+    // 1) object: {"name": [[s,e],...], "path": [[s,e],...]} or
+    // 2) array: [{"field":"name","ranges":[[s,e],...]}, ...]
+    QString nameHtml = nameStr.toHtmlEscaped();
+    QString pathHtml = pathStr.toHtmlEscaped();
+    if (!highlightsJson.isEmpty()) {
+        QJsonParseError err;
+        QJsonDocument doc = QJsonDocument::fromJson(highlightsJson.toUtf8(), &err);
+        if (err.error == QJsonParseError::NoError) {
+            if (doc.isObject()) {
+                QJsonObject obj = doc.object();
+                if (obj.contains("name") && obj.value("name").isArray()) nameHtml = applyRangesToHtml(nameStr, obj.value("name").toArray());
+                if (obj.contains("path") && obj.value("path").isArray()) pathHtml = applyRangesToHtml(pathStr, obj.value("path").toArray());
+            } else if (doc.isArray()) {
+                for (const QJsonValue &v : doc.array()) {
+                    if (!v.isObject()) continue;
+                    QJsonObject o = v.toObject();
+                    QString field = o.value("field").toString();
+                    QJsonArray ranges = o.value("ranges").toArray();
+                    if (field == "name") nameHtml = applyRangesToHtml(nameStr, ranges);
+                    else if (field == "path") pathHtml = applyRangesToHtml(pathStr, ranges);
+                }
+            }
+        } else {
+            // leave escaped raw JSON on second line
+            pathHtml = pathHtml + "<br><small>" + highlightsJson.toHtmlEscaped() + "</small>";
+        }
     }
-    list->addItem(text);
+
+    // Create list item with two labels (name, path) and render HTML in labels
+    QListWidgetItem *item = new QListWidgetItem(list);
+    QWidget *itemWidget = new QWidget();
+    QVBoxLayout *vlayout = new QVBoxLayout(itemWidget);
+    vlayout->setContentsMargins(4,2,4,2);
+    QLabel *nameLabel = new QLabel(itemWidget);
+    nameLabel->setTextFormat(Qt::RichText);
+    nameLabel->setText(nameHtml);
+    QLabel *pathLabel = new QLabel(itemWidget);
+    pathLabel->setTextFormat(Qt::RichText);
+    pathLabel->setText("<small>" + pathHtml + "</small>");
+    vlayout->addWidget(nameLabel);
+    vlayout->addWidget(pathLabel);
+    item->setSizeHint(itemWidget->sizeHint());
+    list->addItem(item);
+    list->setItemWidget(item, itemWidget);
 }
 
 int main(int argc, char **argv) {
