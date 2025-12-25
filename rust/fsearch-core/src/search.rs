@@ -491,13 +491,18 @@ pub fn poll_results(handle: u64) -> Vec<FfiSearchResult> {
 pub fn cancel_search(handle: u64) {
     // Set cancel flag and join the worker thread if present to ensure it exits
     let mut map = HANDLE_MAP.lock();
+    eprintln!("rust: cancel_search requested handle={}", handle);
     if let Some(ctx) = map.remove(&handle) {
         ctx.cancel_flag.store(true, Ordering::SeqCst);
         if let Some(join) = ctx.join_handle {
             // drop lock while joining
             drop(map);
+            eprintln!("rust: joining handle={}", handle);
             let _ = join.join();
+            eprintln!("rust: joined handle={}", handle);
         }
+    } else {
+        eprintln!("rust: cancel_search no-op handle={}", handle);
     }
 }
 
@@ -508,7 +513,10 @@ pub fn shutdown_all() {
         let map = HANDLE_MAP.lock();
         map.keys().copied().collect()
     };
+    eprintln!("rust: shutdown_all found {} handles", handles.len());
     for h in handles {
+        eprintln!("rust: shutdown_all cancelling handle={}", h);
         cancel_search(h);
     }
+    eprintln!("rust: shutdown_all completed");
 }

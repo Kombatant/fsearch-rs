@@ -72,7 +72,7 @@ include CMakeFiles/fsearch_qt_client.dir/flags.make
 fsearch_qt_client_autogen/timestamp: /usr/lib/qt6/moc
 fsearch_qt_client_autogen/timestamp: CMakeFiles/fsearch_qt_client.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Automatic MOC for target fsearch_qt_client"
-	/usr/bin/cmake -E cmake_autogen /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build/CMakeFiles/fsearch_qt_client_autogen.dir/AutogenInfo.json Release
+	/usr/bin/cmake -E cmake_autogen /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build/CMakeFiles/fsearch_qt_client_autogen.dir/AutogenInfo.json RelWithDebInfo
 	/usr/bin/cmake -E touch /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build/fsearch_qt_client_autogen/timestamp
 
 CMakeFiles/fsearch_qt_client.dir/codegen:
@@ -119,7 +119,7 @@ fsearch_qt_client: CMakeFiles/fsearch_qt_client.dir/main.cpp.o
 fsearch_qt_client: CMakeFiles/fsearch_qt_client.dir/build.make
 fsearch_qt_client: CMakeFiles/fsearch_qt_client.dir/compiler_depend.ts
 fsearch_qt_client: /usr/lib/libQt6Widgets.so.6.10.1
-fsearch_qt_client: /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/target/release/libfsearch_core.a
+fsearch_qt_client: ../target/release/libfsearch_core.a
 fsearch_qt_client: /usr/lib/libpcre2-8.so
 fsearch_qt_client: /usr/lib/libQt6Gui.so.6.10.1
 fsearch_qt_client: /usr/lib/libGLX.so

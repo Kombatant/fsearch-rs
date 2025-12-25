@@ -1,5 +1,5 @@
 cargo:rerun-if-changed=build.rs
-OUT_DIR = Some(/home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/target/debug/build/link-cplusplus-bd50d32f3370a8f8/out)
+OUT_DIR = Some(/home/kombatant/Dev/languages/fsearch-rs/rust/target/debug/build/link-cplusplus-bd50d32f3370a8f8/out)
 OPT_LEVEL = Some(0)
 TARGET = Some(x86_64-unknown-linux-gnu)
 CARGO_ENCODED_RUSTFLAGS = Some()
@@ -43,7 +43,7 @@ ARFLAGS_x86_64_unknown_linux_gnu = None
 cargo:rerun-if-env-changed=ARFLAGS_x86_64-unknown-linux-gnu
 ARFLAGS_x86_64-unknown-linux-gnu = None
 cargo:rustc-link-lib=static=link-cplusplus
-cargo:rustc-link-search=native=/home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/target/debug/build/link-cplusplus-bd50d32f3370a8f8/out
+cargo:rustc-link-search=native=/home/kombatant/Dev/languages/fsearch-rs/rust/target/debug/build/link-cplusplus-bd50d32f3370a8f8/out
 cargo:rerun-if-env-changed=CXXSTDLIB_x86_64-unknown-linux-gnu
 CXXSTDLIB_x86_64-unknown-linux-gnu = None
 cargo:rerun-if-env-changed=CXXSTDLIB_x86_64_unknown_linux_gnu

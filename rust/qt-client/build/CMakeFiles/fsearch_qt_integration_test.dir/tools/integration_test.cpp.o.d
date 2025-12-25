@@ -163,4 +163,4 @@ CMakeFiles/fsearch_qt_integration_test.dir/tools/integration_test.cpp.o: \
  /usr/include/c++/15.2.1/bits/basic_ios.tcc \
  /usr/include/c++/15.2.1/bits/ostream.tcc /usr/include/c++/15.2.1/istream \
  /usr/include/c++/15.2.1/bits/istream.tcc \
- /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/fsearch-core/include/fsearch_ffi.h
+ /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/../fsearch-core/include/fsearch_ffi.h

@@ -6,8 +6,12 @@
 #include <QVBoxLayout>
 #include <QTest>
 #include <QTimer>
+#include <cstdio>
 #include <atomic>
 #include <unistd.h>
+#include <cstdlib>
+#include <thread>
+#include <chrono>
 
 #include "fsearch_ffi.h"
 
@@ -15,15 +19,28 @@ static std::atomic<int> g_count{0};
 
 extern "C" void test_cb(uint64_t id, const char *name, const char *path, uint64_t size, uint64_t mtime, const char *highlights, void *userdata) {
     (void)id; (void)size; (void)mtime; (void)highlights;
-    QListWidget *list = static_cast<QListWidget *>(userdata);
-    if (!list) return;
+    // userdata is now a ResultCollector* (QObject) rather than a raw QListWidget*
+    QObject *obj = static_cast<QObject *>(userdata);
+    if (!obj) return;
+    fprintf(stderr, "test_cb: userdata(obj)=%p name=%s\n", (void*)obj, name ? name : "");
     QString nameStr = QString::fromUtf8(name ? name : "");
-    QMetaObject::invokeMethod(QApplication::instance(), [list, nameStr]() {
-        QListWidgetItem *it = new QListWidgetItem(nameStr, list);
-        list->addItem(it);
-    }, Qt::QueuedConnection);
+    // Use invokeMethod on the collector object to marshal the QString safely to the GUI thread
+    QMetaObject::invokeMethod(obj, "addResult", Qt::QueuedConnection, Q_ARG(QString, nameStr));
     g_count.fetch_add(1, std::memory_order_relaxed);
 }
+
+class ResultCollector : public QObject {
+    Q_OBJECT
+    QListWidget *m_list;
+public:
+    explicit ResultCollector(QListWidget *list) : QObject(list), m_list(list) {}
+public slots:
+    void addResult(const QString &s) {
+        if (!m_list) return;
+        new QListWidgetItem(s, m_list);
+        fprintf(stderr, "ResultCollector::addResult: added '%s'\n", s.toUtf8().constData());
+    }
+};
 
 class GuiTest : public QObject {
     Q_OBJECT
@@ -35,13 +52,14 @@ void GuiTest::smoke() {
     int argc = 0; char **argv = nullptr;
     QApplication app(argc, argv);
 
-    QWidget w;
-    QVBoxLayout *layout = new QVBoxLayout(&w);
-    QLineEdit *pathInput = new QLineEdit(&w);
-    QLineEdit *queryInput = new QLineEdit(&w);
-    QPushButton *indexBtn = new QPushButton("Build Index", &w);
-    QPushButton *searchBtn = new QPushButton("Start Search", &w);
-    QListWidget *resultsList = new QListWidget(&w);
+    QWidget *w = new QWidget();
+    QVBoxLayout *layout = new QVBoxLayout(w);
+    QLineEdit *pathInput = new QLineEdit(w);
+    QLineEdit *queryInput = new QLineEdit(w);
+    QPushButton *indexBtn = new QPushButton("Build Index", w);
+    QPushButton *searchBtn = new QPushButton("Start Search", w);
+    QListWidget *resultsList = new QListWidget(w);
+    ResultCollector *collector = new ResultCollector(resultsList);
     layout->addWidget(new QLabel("Index paths (comma-separated):"));
     layout->addWidget(pathInput);
     layout->addWidget(new QLabel("Query:"));
@@ -58,16 +76,40 @@ void GuiTest::smoke() {
         const char *paths[1] = { "." };
         idx = fsearch_index_build_from_paths_c(paths, 1);
         QTest::qWait(50);
-        if (idx) fsearch_index_list_entries_c(idx, test_cb, resultsList);
+        if (idx) fsearch_index_list_entries_c(idx, test_cb, collector);
     });
 
     QObject::connect(searchBtn, &QPushButton::clicked, [&]() {
         resultsList->clear();
         QByteArray qb = queryInput->text().toUtf8();
-        search_handle = fsearch_start_search_with_cb_c(qb.constData(), test_cb, resultsList);
+        search_handle = fsearch_start_search_with_cb_c(qb.constData(), test_cb, collector);
     });
 
-    w.show();
+    w->show();
+
+    // If requested, run a NO-FFI simulation: spawn a worker that posts many queued GUI updates
+    if (getenv("FSEARCH_NOFFI")) {
+        fprintf(stderr, "NOFFI: simulating queued GUI updates\n");
+        std::thread worker([collector]() {
+            for (int i = 0; i < 5000; ++i) {
+                std::string s = std::string("sim-") + std::to_string(i);
+                QMetaObject::invokeMethod(QApplication::instance(), [s, collector]() {
+                    collector->addResult(QString::fromUtf8(s.c_str()));
+                }, Qt::QueuedConnection);
+                if ((i & 127) == 0) std::this_thread::sleep_for(std::chrono::milliseconds(1));
+            }
+        });
+        worker.join();
+        for (int i = 0; i < 200; ++i) {
+            QCoreApplication::processEvents();
+            QTest::qWait(5);
+        }
+        fprintf(stderr, "NOFFI: deleting main window\n");
+        delete w;
+        w = nullptr;
+        QCoreApplication::processEvents();
+        return;
+    }
 
     // simulate user: build index, then perform search
     QTest::mouseClick(indexBtn, Qt::LeftButton);
@@ -97,6 +139,7 @@ void GuiTest::smoke() {
     // QMetaObject::invokeMethod(..., Qt::QueuedConnection) are handled
     // before QApplication teardown.
     for (int i = 0; i < 20; ++i) {
+        fprintf(stderr, "drain loop %d\n", i);
         QCoreApplication::processEvents();
         QTest::qWait(10);
     }
@@ -106,9 +149,16 @@ void GuiTest::smoke() {
 
     // allow a brief moment for any final queued events to be processed (1s)
     for (int i = 0; i < 100; ++i) {
+        if ((i & 15) == 0) fprintf(stderr, "post-shutdown drain %d\n", i);
         QCoreApplication::processEvents();
         QTest::qWait(10);
     }
+
+    // Explicitly delete the main window and its children before QApplication teardown
+    fprintf(stderr, "deleting main window and children\n");
+    delete w;
+    w = nullptr;
+    QCoreApplication::processEvents();
 }
 
 QTEST_MAIN(GuiTest)

@@ -71,7 +71,7 @@ CMakeFiles/fsearch_qt_integration_test_autogen: fsearch_qt_integration_test_auto
 fsearch_qt_integration_test_autogen/timestamp: /usr/lib/qt6/moc
 fsearch_qt_integration_test_autogen/timestamp: CMakeFiles/fsearch_qt_integration_test_autogen.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Automatic MOC for target fsearch_qt_integration_test"
-	/usr/bin/cmake -E cmake_autogen /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build/CMakeFiles/fsearch_qt_integration_test_autogen.dir/AutogenInfo.json Release
+	/usr/bin/cmake -E cmake_autogen /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build/CMakeFiles/fsearch_qt_integration_test_autogen.dir/AutogenInfo.json RelWithDebInfo
 	/usr/bin/cmake -E touch /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build/fsearch_qt_integration_test_autogen/timestamp
 
 CMakeFiles/fsearch_qt_integration_test_autogen.dir/codegen:

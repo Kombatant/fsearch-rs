@@ -1,0 +1,14 @@
+/home/kombatant/Dev/languages/fsearch-rs/rust/target/debug/deps/serde-e5efa7f7d62dd3b4.d: /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/lib.rs /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/integer128.rs /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/mod.rs /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/de.rs /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/ser.rs /home/kombatant/Dev/languages/fsearch-rs/rust/target/debug/build/serde-2bc44523d451fd41/out/private.rs
+
+/home/kombatant/Dev/languages/fsearch-rs/rust/target/debug/deps/libserde-e5efa7f7d62dd3b4.rlib: /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/lib.rs /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/integer128.rs /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/mod.rs /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/de.rs /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/ser.rs /home/kombatant/Dev/languages/fsearch-rs/rust/target/debug/build/serde-2bc44523d451fd41/out/private.rs
+
+/home/kombatant/Dev/languages/fsearch-rs/rust/target/debug/deps/libserde-e5efa7f7d62dd3b4.rmeta: /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/lib.rs /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/integer128.rs /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/mod.rs /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/de.rs /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/ser.rs /home/kombatant/Dev/languages/fsearch-rs/rust/target/debug/build/serde-2bc44523d451fd41/out/private.rs
+
+/home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/lib.rs:
+/home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/integer128.rs:
+/home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/mod.rs:
+/home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/de.rs:
+/home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/serde-1.0.228/src/private/ser.rs:
+/home/kombatant/Dev/languages/fsearch-rs/rust/target/debug/build/serde-2bc44523d451fd41/out/private.rs:
+
+# env-dep:OUT_DIR=/home/kombatant/Dev/languages/fsearch-rs/rust/target/debug/build/serde-2bc44523d451fd41/out

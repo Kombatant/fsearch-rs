@@ -1,0 +1,7 @@
+/home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/target/release/deps/pkg_config-55ac52fe9d084528.d: /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/pkg-config-0.3.32/src/lib.rs
+
+/home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/target/release/deps/libpkg_config-55ac52fe9d084528.rlib: /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/pkg-config-0.3.32/src/lib.rs
+
+/home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/target/release/deps/libpkg_config-55ac52fe9d084528.rmeta: /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/pkg-config-0.3.32/src/lib.rs
+
+/home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/pkg-config-0.3.32/src/lib.rs:

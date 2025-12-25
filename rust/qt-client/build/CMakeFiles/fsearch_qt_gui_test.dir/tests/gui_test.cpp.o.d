@@ -479,7 +479,9 @@ CMakeFiles/fsearch_qt_gui_test.dir/tests/gui_test.cpp.o: \
  /usr/include/bits/environments.h /usr/include/bits/confname.h \
  /usr/include/bits/getopt_posix.h /usr/include/bits/getopt_core.h \
  /usr/include/bits/unistd_ext.h /usr/include/linux/close_range.h \
- /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/fsearch-core/include/fsearch_ffi.h \
+ /usr/include/c++/15.2.1/thread \
+ /usr/include/c++/15.2.1/bits/this_thread_sleep.h \
+ /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/../fsearch-core/include/fsearch_ffi.h \
  /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build/fsearch_qt_gui_test_autogen/include/gui_test.moc \
  /usr/include/qt6/QtCore/qtmochelpers.h \
  /usr/include/qt6/QtCore/qtmocconstants.h \
