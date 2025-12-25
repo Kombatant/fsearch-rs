@@ -166,8 +166,32 @@ impl QueryMatcher {
     /// Test whether `compiled` matches `text` (normalized bytes).
     pub fn is_match(&self, compiled: &CompiledNode, text: &[u8]) -> bool {
         match compiled {
-            CompiledNode::Leaf { pat, negated, .. } => {
-                let res = pat.is_match(text);
+            CompiledNode::Leaf { pat, negated, field, .. } => {
+                // If this leaf is targeted at a specific field, scope
+                // the matching to that field. Currently we special-case
+                // the `extension` field to match only the file extension
+                // of the `name` portion. The combined text format used by
+                // the search pipeline is `name + "\n" + path`.
+                let res = if let Some(f) = field {
+                    if f.eq("extension") {
+                        // extract name (before first newline)
+                        if let Ok(s) = std::str::from_utf8(text) {
+                            let name = s.splitn(2, '\n').next().unwrap_or("");
+                            if let Some(dot_idx) = name.rfind('.') {
+                                let ext = &name[dot_idx+1..];
+                                pat.is_match(ext.as_bytes())
+                            } else {
+                                false
+                            }
+                        } else {
+                            false
+                        }
+                    } else {
+                        pat.is_match(text)
+                    }
+                } else {
+                    pat.is_match(text)
+                };
                 if *negated { !res } else { res }
             }
             CompiledNode::Compare { field: _, op, value } => {
@@ -242,7 +266,32 @@ impl QueryMatcher {
     /// Return first capture ranges for leaf matches (empty vector when none).
     pub fn captures(&self, compiled: &CompiledNode, text: &[u8]) -> Vec<(usize, usize)> {
         match compiled {
-            CompiledNode::Leaf { pat, .. } => pat.captures_ranges(text).unwrap_or_default(),
+            CompiledNode::Leaf { pat, field, .. } => {
+                // For field-scoped leaves, adjust captured ranges to the
+                // combined text layout. Special-case `extension` to map
+                // captures into the `name` portion's extension bytes.
+                if let Some(f) = field {
+                    if f.eq("extension") {
+                        if let Ok(s) = std::str::from_utf8(text) {
+                            let name = s.splitn(2, '\n').next().unwrap_or("");
+                            if let Some(dot_idx) = name.rfind('.') {
+                                let ext = &name[dot_idx+1..];
+                                if let Some(mut ranges) = pat.captures_ranges(ext.as_bytes()) {
+                                    // shift ranges by dot_idx+1 to be relative to
+                                    // the combined text start
+                                    for r in ranges.iter_mut() {
+                                        r.0 += dot_idx + 1;
+                                        r.1 += dot_idx + 1;
+                                    }
+                                    return ranges;
+                                }
+                            }
+                        }
+                        return vec![];
+                    }
+                }
+                pat.captures_ranges(text).unwrap_or_default()
+            }
             CompiledNode::Compare { .. } => vec![],
             CompiledNode::Range { .. } => vec![],
                 CompiledNode::Function { name, args } => {
@@ -492,5 +541,26 @@ mod tests {
             if &b"xxab123yy"[*s..*e] == b"ab123" { found = true; }
         }
         assert!(found);
+    }
+
+    #[test]
+    fn matcher_field_extension() {
+        let pool = PatternPool::new();
+        let qm = QueryMatcher::new(pool);
+        // Field-scoped term: extension:txt should match file name's extension only
+        let node = Node::Field("extension".to_string(), "txt".to_string());
+        let compiled = qm.compile(&node).unwrap();
+        // combined text format: name + '\n' + path
+        let combined = b"file.txt\n/some/path/file.txt";
+        assert!(qm.is_match(&compiled, combined));
+        let caps = qm.captures(&compiled, combined);
+        // Expect at least one capture covering the 'txt' bytes in the name portion
+        assert!(!caps.is_empty());
+        let (s,e) = caps[0];
+        let name = "file.txt";
+        let dot = name.rfind('.').unwrap();
+        let expected_s = dot + 1;
+        let expected_e = name.len();
+        assert_eq!((s,e), (expected_s, expected_e));
     }
 }
