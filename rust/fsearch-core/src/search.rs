@@ -146,6 +146,221 @@ fn byte_range_to_utf16_bounds(text: &str, start: usize, end: usize) -> (usize, u
     (start_units, end_units)
 }
 
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::ffi::CString;
+    use std::ffi::CStr;
+    // no direct c_void import needed; use std::os::raw types inline
+    use std::time::Duration;
+    use std::sync::mpsc;
+    use tempfile::tempdir;
+    use std::fs::File;
+    use std::io::Write;
+    use serde_json::Value;
+
+    #[test]
+    fn utf16_mapping_flag_emoji() {
+        let s = "a🇺🇸b"; // '🇺🇸' is a flag composed of two regional indicators
+        let flag = "🇺🇸";
+        let start = s.find(flag).expect("flag present");
+        let end = start + flag.len();
+        let (su, eu) = byte_range_to_utf16_bounds(s, start, end);
+        let expected_su = s[..start].encode_utf16().count();
+        let expected_eu = s[..end].encode_utf16().count();
+        assert_eq!((su, eu), (expected_su, expected_eu));
+    }
+
+    #[test]
+    fn utf16_mapping_combining_mark() {
+        // 'e' + combining acute accent (U+0301) should be a single grapheme
+        let s = "x e\u{301} y"; // string contains 'é' composed
+        // find the composed sequence by searching for 'e' and then include combining mark
+        let idx_e = s.find('e').expect("e present");
+        let start = idx_e;
+        // end should include the combining mark byte length
+        let end = start + s[start..].chars().next().unwrap().len_utf8() + "\u{301}".len();
+        let (su, eu) = byte_range_to_utf16_bounds(s, start, end);
+        let expected_su = s[..start].encode_utf16().count();
+        let expected_eu = s[..end].encode_utf16().count();
+        assert_eq!((su, eu), (expected_su, expected_eu));
+    }
+
+    #[test]
+    fn utf16_mapping_zwj_sequence() {
+        // family emoji is often a ZWJ sequence forming one grapheme cluster
+        let family = "👩‍👩‍👧‍👦";
+        let s = format!("A{}Z", family);
+        let start = s.find(family).expect("family present");
+        let end = start + family.len();
+        let (su, eu) = byte_range_to_utf16_bounds(&s, start, end);
+        let expected_su = s[..start].encode_utf16().count();
+        let expected_eu = s[..end].encode_utf16().count();
+        assert_eq!((su, eu), (expected_su, expected_eu));
+    }
+
+    #[test]
+    fn full_pipeline_event_driven_highlight() {
+        // create temp dir and files with multibyte/grapheme names
+        let dir = tempdir().expect("tempdir");
+        let p = dir.path();
+        let f1 = p.join("alpha_🇺🇸_test.txt");
+        let f2 = p.join("beta_e\u{301}_sample.txt");
+        File::create(&f1).unwrap().write_all(b"x").unwrap();
+        File::create(&f2).unwrap().write_all(b"y").unwrap();
+
+        // build index from temp dir (this sets CURRENT_INDEX)
+        let paths = vec![p.to_string_lossy().to_string()];
+        let _boxed = crate::index_build_from_paths(paths);
+
+        // setup channel to receive highlight JSON from callback
+        let (tx, rx) = mpsc::channel::<String>();
+        let tx_box = Box::into_raw(Box::new(tx));
+
+        extern "C" fn cb(_id: u64, name: *const std::os::raw::c_char, _path: *const std::os::raw::c_char, _size: u64, _mtime: u64, highlights: *const std::os::raw::c_char, userdata: *mut std::os::raw::c_void) {
+            unsafe {
+                let hl = if highlights.is_null() { String::new() } else { CStr::from_ptr(highlights).to_string_lossy().into_owned() };
+                let nm = if name.is_null() { String::new() } else { CStr::from_ptr(name).to_string_lossy().into_owned() };
+                let obj = serde_json::json!({"name": nm, "highlights": hl});
+                let s = obj.to_string();
+                let tx: &std::sync::mpsc::Sender<String> = &*(userdata as *mut std::sync::mpsc::Sender<String>);
+                let _ = tx.send(s);
+            }
+        }
+
+        let q = CString::new("test").unwrap();
+        let handle = crate::fsearch_start_search_with_cb_c(q.as_ptr(), Some(cb), tx_box as *mut std::os::raw::c_void);
+        assert!(handle != 0);
+
+        // wait for at least one highlight message
+        let msg = rx.recv_timeout(Duration::from_secs(5)).expect("got highlight JSON");
+        eprintln!("DEBUG received: {}", msg);
+        let wrapper: Value = serde_json::from_str(&msg).expect("valid wrapper json");
+        let name = wrapper.get("name").and_then(|v| v.as_str()).unwrap_or("");
+        let highlights_str = wrapper.get("highlights").and_then(|v| v.as_str()).unwrap_or("");
+        let v: Value = serde_json::from_str(highlights_str).expect("valid highlights json");
+        assert!(v.is_array());
+        let arr = v.as_array().unwrap();
+        assert!(!arr.is_empty());
+        // find a name-field entry with a non-empty ranges array
+        let mut found = false;
+        for it in arr.iter() {
+            let field_opt = it.get("field").and_then(|f| f.as_str());
+            if field_opt == Some("name") || field_opt.is_none() {
+                if let Some(ranges) = it.get("ranges") {
+                    if ranges.is_array() && !ranges.as_array().unwrap().is_empty() {
+                        // validate that the first range extracts substring "test" from `name` when using UTF-16 indices
+                        let r = ranges.as_array().unwrap()[0].as_array().unwrap();
+                        let s_idx = r[0].as_u64().unwrap() as usize;
+                        let e_idx = r[1].as_u64().unwrap() as usize;
+                        // compute expected UTF-16 indices for substring "test" in name
+                        if let Some(pos) = name.find("test") {
+                            let expected_s = name[..pos].encode_utf16().count();
+                            let expected_e = name[..pos+"test".len()].encode_utf16().count();
+                            assert_eq!(s_idx, expected_s, "start index matches");
+                            assert_eq!(e_idx, expected_e, "end index matches");
+                            found = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        if !found {
+            eprintln!("DEBUG name='{}' highlights_json='{}' parsed_arr='{}'", name, highlights_str, serde_json::to_string_pretty(&v).unwrap_or_default());
+        }
+        assert!(found, "expected a name-field ranges entry matching 'test'");
+
+        // cleanup boxed sender
+        unsafe { drop(Box::from_raw(tx_box)); }
+    }
+
+    #[test]
+    fn full_pipeline_event_driven_highlight_path() {
+        // create temp dir with a subdirectory that contains 'test' in its name
+        let dir = tempdir().expect("tempdir");
+        let p = dir.path();
+        let sub = p.join("sub_testdir");
+        std::fs::create_dir_all(&sub).unwrap();
+        let f = sub.join("file.txt");
+        File::create(&f).unwrap().write_all(b"content").unwrap();
+
+        // build index from temp dir
+        let paths = vec![p.to_string_lossy().to_string()];
+        let _boxed = crate::index_build_from_paths(paths);
+
+        // setup channel to receive highlight JSON from callback (send name+path+highlights)
+        let (tx, rx) = mpsc::channel::<String>();
+        let tx_box = Box::into_raw(Box::new(tx));
+
+        extern "C" fn cb(_id: u64, name: *const std::os::raw::c_char, path: *const std::os::raw::c_char, _size: u64, _mtime: u64, highlights: *const std::os::raw::c_char, userdata: *mut std::os::raw::c_void) {
+            unsafe {
+                let hl = if highlights.is_null() { String::new() } else { CStr::from_ptr(highlights).to_string_lossy().into_owned() };
+                let p = if path.is_null() { String::new() } else { CStr::from_ptr(path).to_string_lossy().into_owned() };
+                let n = if name.is_null() { String::new() } else { CStr::from_ptr(name).to_string_lossy().into_owned() };
+                let obj = serde_json::json!({"name": n, "path": p, "highlights": hl});
+                let s = obj.to_string();
+                let tx: &std::sync::mpsc::Sender<String> = &*(userdata as *mut std::sync::mpsc::Sender<String>);
+                let _ = tx.send(s);
+            }
+        }
+
+        let q = CString::new("test").unwrap();
+        let handle = crate::fsearch_start_search_with_cb_c(q.as_ptr(), Some(cb), tx_box as *mut std::os::raw::c_void);
+        assert!(handle != 0);
+
+        // wait for a callback
+        let msg = rx.recv_timeout(Duration::from_secs(5)).expect("got highlight JSON");
+        let wrapper: Value = serde_json::from_str(&msg).expect("valid wrapper json");
+        let path = wrapper.get("path").and_then(|v| v.as_str()).unwrap_or("");
+        let highlights_str = wrapper.get("highlights").and_then(|v| v.as_str()).unwrap_or("");
+        let v: Value = serde_json::from_str(highlights_str).expect("valid highlights json");
+        assert!(v.is_array());
+        let arr = v.as_array().unwrap();
+        assert!(!arr.is_empty());
+
+        // Look for a ranges entry that maps to substring "test" in `path`
+        let mut found = false;
+        for it in arr.iter() {
+            // field may be explicitly "path" or null; accept either
+            let field_opt = it.get("field").and_then(|f| f.as_str());
+            if field_opt == Some("path") || field_opt.is_none() {
+                if let Some(ranges) = it.get("ranges") {
+                    if ranges.is_array() && !ranges.as_array().unwrap().is_empty() {
+                        let r = ranges.as_array().unwrap()[0].as_array().unwrap();
+                        let s_idx = r[0].as_u64().unwrap() as usize;
+                        let e_idx = r[1].as_u64().unwrap() as usize;
+                        // compute combined text UTF-16 indices mapping: name + '\n' + path
+                        let name = wrapper.get("name").and_then(|v| v.as_str()).unwrap_or("");
+                        let name_units = name.encode_utf16().count();
+                        // the worker code constructs text = format!("{}\n{}", e.name, e.path)
+                        // so path UTF-16 indices start at name_units + 1 (the newline)
+                        let combined_start = name_units + 1;
+                        if s_idx >= combined_start {
+                            // slice relative to path
+                            let rel_start = s_idx - combined_start;
+                            let rel_end = e_idx - combined_start;
+                            let s_utf16: Vec<u16> = path.encode_utf16().collect();
+                            if rel_end <= s_utf16.len() && rel_start < rel_end {
+                                let slice = String::from_utf16(&s_utf16[rel_start..rel_end]).unwrap_or_default();
+                                if slice.to_lowercase().contains("test") {
+                                    found = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // cleanup boxed sender
+        unsafe { drop(Box::from_raw(tx_box)); }
+
+        assert!(found, "didn't find a path-field highlight covering 'test'");
+    }
+}
+
 /// Start a search and invoke the provided C callback for each matching result.
 /// This is event-driven: results are delivered by Rust calling the callback as
 /// they are found. Note: callers should ensure the callback is thread-safe or
