@@ -1,8 +1,21 @@
 // C header for the minimal fsearch-core FFI used by the Qt test client.
 #pragma once
+// C header for the minimal fsearch-core FFI used by the Qt test client.
+#pragma once
+
+// Notes on `highlights` JSON (UTF-8 encoded C string):
+// - The `highlights` parameter is a JSON array of objects or an empty string.
+// - Each object has the form: { "field": <string|null>, "ranges": [[start,end], ...] }
+//   where `field` indicates which textual field the ranges apply to (e.g. "name", "path").
+// - `start` and `end` are UTF-16 code-unit indices (half-open: [start,end)) aligned
+//   to grapheme cluster boundaries. These indices are safe to apply directly to
+//   Qt `QString` via `mid(start, end-start)`.
+// - For queries that explicitly target a field (e.g. `path:term`), the `field`
+//   value will be set to that field name ("path") for any ranges produced by
+//   that term. Clients should prefer the explicit `field` value when present.
 
 #include <stdint.h>
-
+ 
 #ifdef __cplusplus
 extern "C" {
 #endif

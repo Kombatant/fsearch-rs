@@ -55,6 +55,16 @@ static QString applyRangesToHtml(const QString &text, const QJsonArray &rangesAr
 
 extern "C" void result_cb(uint64_t id, const char *name, const char *path, uint64_t size, uint64_t mtime, const char *highlights, void *userdata) {
     // Called from Rust search threads. Post to Qt main thread via queued invocation.
+    //
+    // `highlights` is a UTF-8 JSON string produced by the Rust backend. It may
+    // be either an array of objects or an object mapping field names to ranges.
+    // Format (array form):
+    //   [ { "field": <string|null>, "ranges": [[start,end], ...] }, ... ]
+    // where `start`/`end` are UTF-16 code-unit indices aligned to grapheme
+    // cluster boundaries. For queries that explicitly target a field (e.g.
+    // `path:term`), the backend will set `field` to that field name ("path").
+    // Clients should prefer an explicit `field` value when present and apply
+    // the ranges to the corresponding textual field (e.g. `name` or `path`).
     QListWidget *list = static_cast<QListWidget *>(userdata);
     if (!list) return;
     QString nameStr = QString::fromUtf8(name ? name : "");
