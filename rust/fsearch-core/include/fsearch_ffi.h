@@ -33,6 +33,7 @@ uint64_t fsearch_start_search_c(const char *query);
 uint64_t fsearch_start_search_with_cb_c(const char *query, fsearch_result_cb_t cb, void *userdata);
 void fsearch_poll_results_c(uint64_t handle, fsearch_result_cb_t cb, void *userdata);
 void fsearch_cancel_search_c(uint64_t handle);
+void fsearch_shutdown(void);
 
 #ifdef __cplusplus
 }

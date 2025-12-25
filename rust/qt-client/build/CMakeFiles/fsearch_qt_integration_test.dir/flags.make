@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/fsearch-core/include
+CXX_INCLUDES = -I/home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build/fsearch_qt_integration_test_autogen/include -I/home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/fsearch-core/include
 
 CXX_FLAGS = -O3 -DNDEBUG
 

@@ -500,3 +500,15 @@ pub fn cancel_search(handle: u64) {
         }
     }
 }
+
+/// Cancel and join all active searches. Safe to call multiple times.
+pub fn shutdown_all() {
+    // collect handles first to avoid holding lock while joining
+    let handles: Vec<u64> = {
+        let map = HANDLE_MAP.lock();
+        map.keys().copied().collect()
+    };
+    for h in handles {
+        cancel_search(h);
+    }
+}

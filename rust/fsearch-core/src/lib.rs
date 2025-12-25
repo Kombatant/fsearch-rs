@@ -201,3 +201,11 @@ pub extern "C" fn fsearch_poll_results_c(handle: u64, cb: Option<FsearchResultCb
 pub extern "C" fn fsearch_cancel_search_c(handle: u64) {
     cancel_search(handle)
 }
+
+#[no_mangle]
+pub extern "C" fn fsearch_shutdown() {
+    // cancel and join all searches
+    search_mod::shutdown_all();
+    // clear global index snapshot
+    *CURRENT_INDEX.lock() = None;
+}

@@ -69,13 +69,33 @@ include CMakeFiles/fsearch_qt_integration_test.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/fsearch_qt_integration_test.dir/flags.make
 
+fsearch_qt_integration_test_autogen/timestamp: /usr/lib/qt6/moc
+fsearch_qt_integration_test_autogen/timestamp: CMakeFiles/fsearch_qt_integration_test.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Automatic MOC for target fsearch_qt_integration_test"
+	/usr/bin/cmake -E cmake_autogen /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build/CMakeFiles/fsearch_qt_integration_test_autogen.dir/AutogenInfo.json Release
+	/usr/bin/cmake -E touch /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build/fsearch_qt_integration_test_autogen/timestamp
+
 CMakeFiles/fsearch_qt_integration_test.dir/codegen:
 .PHONY : CMakeFiles/fsearch_qt_integration_test.dir/codegen
+
+CMakeFiles/fsearch_qt_integration_test.dir/fsearch_qt_integration_test_autogen/mocs_compilation.cpp.o: CMakeFiles/fsearch_qt_integration_test.dir/flags.make
+CMakeFiles/fsearch_qt_integration_test.dir/fsearch_qt_integration_test_autogen/mocs_compilation.cpp.o: fsearch_qt_integration_test_autogen/mocs_compilation.cpp
+CMakeFiles/fsearch_qt_integration_test.dir/fsearch_qt_integration_test_autogen/mocs_compilation.cpp.o: CMakeFiles/fsearch_qt_integration_test.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/fsearch_qt_integration_test.dir/fsearch_qt_integration_test_autogen/mocs_compilation.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/fsearch_qt_integration_test.dir/fsearch_qt_integration_test_autogen/mocs_compilation.cpp.o -MF CMakeFiles/fsearch_qt_integration_test.dir/fsearch_qt_integration_test_autogen/mocs_compilation.cpp.o.d -o CMakeFiles/fsearch_qt_integration_test.dir/fsearch_qt_integration_test_autogen/mocs_compilation.cpp.o -c /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build/fsearch_qt_integration_test_autogen/mocs_compilation.cpp
+
+CMakeFiles/fsearch_qt_integration_test.dir/fsearch_qt_integration_test_autogen/mocs_compilation.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/fsearch_qt_integration_test.dir/fsearch_qt_integration_test_autogen/mocs_compilation.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build/fsearch_qt_integration_test_autogen/mocs_compilation.cpp > CMakeFiles/fsearch_qt_integration_test.dir/fsearch_qt_integration_test_autogen/mocs_compilation.cpp.i
+
+CMakeFiles/fsearch_qt_integration_test.dir/fsearch_qt_integration_test_autogen/mocs_compilation.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/fsearch_qt_integration_test.dir/fsearch_qt_integration_test_autogen/mocs_compilation.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build/fsearch_qt_integration_test_autogen/mocs_compilation.cpp -o CMakeFiles/fsearch_qt_integration_test.dir/fsearch_qt_integration_test_autogen/mocs_compilation.cpp.s
 
 CMakeFiles/fsearch_qt_integration_test.dir/tools/integration_test.cpp.o: CMakeFiles/fsearch_qt_integration_test.dir/flags.make
 CMakeFiles/fsearch_qt_integration_test.dir/tools/integration_test.cpp.o: /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/tools/integration_test.cpp
 CMakeFiles/fsearch_qt_integration_test.dir/tools/integration_test.cpp.o: CMakeFiles/fsearch_qt_integration_test.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/fsearch_qt_integration_test.dir/tools/integration_test.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/fsearch_qt_integration_test.dir/tools/integration_test.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/fsearch_qt_integration_test.dir/tools/integration_test.cpp.o -MF CMakeFiles/fsearch_qt_integration_test.dir/tools/integration_test.cpp.o.d -o CMakeFiles/fsearch_qt_integration_test.dir/tools/integration_test.cpp.o -c /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/tools/integration_test.cpp
 
 CMakeFiles/fsearch_qt_integration_test.dir/tools/integration_test.cpp.i: cmake_force
@@ -88,18 +108,20 @@ CMakeFiles/fsearch_qt_integration_test.dir/tools/integration_test.cpp.s: cmake_f
 
 # Object files for target fsearch_qt_integration_test
 fsearch_qt_integration_test_OBJECTS = \
+"CMakeFiles/fsearch_qt_integration_test.dir/fsearch_qt_integration_test_autogen/mocs_compilation.cpp.o" \
 "CMakeFiles/fsearch_qt_integration_test.dir/tools/integration_test.cpp.o"
 
 # External object files for target fsearch_qt_integration_test
 fsearch_qt_integration_test_EXTERNAL_OBJECTS =
 
+fsearch_qt_integration_test: CMakeFiles/fsearch_qt_integration_test.dir/fsearch_qt_integration_test_autogen/mocs_compilation.cpp.o
 fsearch_qt_integration_test: CMakeFiles/fsearch_qt_integration_test.dir/tools/integration_test.cpp.o
 fsearch_qt_integration_test: CMakeFiles/fsearch_qt_integration_test.dir/build.make
 fsearch_qt_integration_test: CMakeFiles/fsearch_qt_integration_test.dir/compiler_depend.ts
 fsearch_qt_integration_test: /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/target/release/libfsearch_core.a
 fsearch_qt_integration_test: /usr/lib/libpcre2-8.so
 fsearch_qt_integration_test: CMakeFiles/fsearch_qt_integration_test.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable fsearch_qt_integration_test"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable fsearch_qt_integration_test"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/fsearch_qt_integration_test.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -110,7 +132,7 @@ CMakeFiles/fsearch_qt_integration_test.dir/clean:
 	$(CMAKE_COMMAND) -P CMakeFiles/fsearch_qt_integration_test.dir/cmake_clean.cmake
 .PHONY : CMakeFiles/fsearch_qt_integration_test.dir/clean
 
-CMakeFiles/fsearch_qt_integration_test.dir/depend:
+CMakeFiles/fsearch_qt_integration_test.dir/depend: fsearch_qt_integration_test_autogen/timestamp
 	cd /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build/CMakeFiles/fsearch_qt_integration_test.dir/DependInfo.cmake "--color=$(COLOR)" fsearch_qt_integration_test
 .PHONY : CMakeFiles/fsearch_qt_integration_test.dir/depend
 

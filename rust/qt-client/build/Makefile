@@ -142,6 +142,169 @@ fsearch_qt_integration_test/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/fsearch_qt_integration_test.dir/build.make CMakeFiles/fsearch_qt_integration_test.dir/build
 .PHONY : fsearch_qt_integration_test/fast
 
+#=============================================================================
+# Target rules for targets named fsearch_qt_gui_test
+
+# Build rule for target.
+fsearch_qt_gui_test: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 fsearch_qt_gui_test
+.PHONY : fsearch_qt_gui_test
+
+# fast build rule for target.
+fsearch_qt_gui_test/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/fsearch_qt_gui_test.dir/build.make CMakeFiles/fsearch_qt_gui_test.dir/build
+.PHONY : fsearch_qt_gui_test/fast
+
+#=============================================================================
+# Target rules for targets named fsearch_qt_client_autogen_timestamp_deps
+
+# Build rule for target.
+fsearch_qt_client_autogen_timestamp_deps: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 fsearch_qt_client_autogen_timestamp_deps
+.PHONY : fsearch_qt_client_autogen_timestamp_deps
+
+# fast build rule for target.
+fsearch_qt_client_autogen_timestamp_deps/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/fsearch_qt_client_autogen_timestamp_deps.dir/build.make CMakeFiles/fsearch_qt_client_autogen_timestamp_deps.dir/build
+.PHONY : fsearch_qt_client_autogen_timestamp_deps/fast
+
+#=============================================================================
+# Target rules for targets named fsearch_qt_client_autogen
+
+# Build rule for target.
+fsearch_qt_client_autogen: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 fsearch_qt_client_autogen
+.PHONY : fsearch_qt_client_autogen
+
+# fast build rule for target.
+fsearch_qt_client_autogen/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/fsearch_qt_client_autogen.dir/build.make CMakeFiles/fsearch_qt_client_autogen.dir/build
+.PHONY : fsearch_qt_client_autogen/fast
+
+#=============================================================================
+# Target rules for targets named fsearch_qt_integration_test_autogen_timestamp_deps
+
+# Build rule for target.
+fsearch_qt_integration_test_autogen_timestamp_deps: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 fsearch_qt_integration_test_autogen_timestamp_deps
+.PHONY : fsearch_qt_integration_test_autogen_timestamp_deps
+
+# fast build rule for target.
+fsearch_qt_integration_test_autogen_timestamp_deps/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/fsearch_qt_integration_test_autogen_timestamp_deps.dir/build.make CMakeFiles/fsearch_qt_integration_test_autogen_timestamp_deps.dir/build
+.PHONY : fsearch_qt_integration_test_autogen_timestamp_deps/fast
+
+#=============================================================================
+# Target rules for targets named fsearch_qt_integration_test_autogen
+
+# Build rule for target.
+fsearch_qt_integration_test_autogen: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 fsearch_qt_integration_test_autogen
+.PHONY : fsearch_qt_integration_test_autogen
+
+# fast build rule for target.
+fsearch_qt_integration_test_autogen/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/fsearch_qt_integration_test_autogen.dir/build.make CMakeFiles/fsearch_qt_integration_test_autogen.dir/build
+.PHONY : fsearch_qt_integration_test_autogen/fast
+
+#=============================================================================
+# Target rules for targets named fsearch_qt_gui_test_autogen_timestamp_deps
+
+# Build rule for target.
+fsearch_qt_gui_test_autogen_timestamp_deps: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 fsearch_qt_gui_test_autogen_timestamp_deps
+.PHONY : fsearch_qt_gui_test_autogen_timestamp_deps
+
+# fast build rule for target.
+fsearch_qt_gui_test_autogen_timestamp_deps/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/fsearch_qt_gui_test_autogen_timestamp_deps.dir/build.make CMakeFiles/fsearch_qt_gui_test_autogen_timestamp_deps.dir/build
+.PHONY : fsearch_qt_gui_test_autogen_timestamp_deps/fast
+
+#=============================================================================
+# Target rules for targets named fsearch_qt_gui_test_autogen
+
+# Build rule for target.
+fsearch_qt_gui_test_autogen: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 fsearch_qt_gui_test_autogen
+.PHONY : fsearch_qt_gui_test_autogen
+
+# fast build rule for target.
+fsearch_qt_gui_test_autogen/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/fsearch_qt_gui_test_autogen.dir/build.make CMakeFiles/fsearch_qt_gui_test_autogen.dir/build
+.PHONY : fsearch_qt_gui_test_autogen/fast
+
+fsearch_qt_client_autogen/mocs_compilation.o: fsearch_qt_client_autogen/mocs_compilation.cpp.o
+.PHONY : fsearch_qt_client_autogen/mocs_compilation.o
+
+# target to build an object file
+fsearch_qt_client_autogen/mocs_compilation.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/fsearch_qt_client.dir/build.make CMakeFiles/fsearch_qt_client.dir/fsearch_qt_client_autogen/mocs_compilation.cpp.o
+.PHONY : fsearch_qt_client_autogen/mocs_compilation.cpp.o
+
+fsearch_qt_client_autogen/mocs_compilation.i: fsearch_qt_client_autogen/mocs_compilation.cpp.i
+.PHONY : fsearch_qt_client_autogen/mocs_compilation.i
+
+# target to preprocess a source file
+fsearch_qt_client_autogen/mocs_compilation.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/fsearch_qt_client.dir/build.make CMakeFiles/fsearch_qt_client.dir/fsearch_qt_client_autogen/mocs_compilation.cpp.i
+.PHONY : fsearch_qt_client_autogen/mocs_compilation.cpp.i
+
+fsearch_qt_client_autogen/mocs_compilation.s: fsearch_qt_client_autogen/mocs_compilation.cpp.s
+.PHONY : fsearch_qt_client_autogen/mocs_compilation.s
+
+# target to generate assembly for a file
+fsearch_qt_client_autogen/mocs_compilation.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/fsearch_qt_client.dir/build.make CMakeFiles/fsearch_qt_client.dir/fsearch_qt_client_autogen/mocs_compilation.cpp.s
+.PHONY : fsearch_qt_client_autogen/mocs_compilation.cpp.s
+
+fsearch_qt_gui_test_autogen/mocs_compilation.o: fsearch_qt_gui_test_autogen/mocs_compilation.cpp.o
+.PHONY : fsearch_qt_gui_test_autogen/mocs_compilation.o
+
+# target to build an object file
+fsearch_qt_gui_test_autogen/mocs_compilation.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/fsearch_qt_gui_test.dir/build.make CMakeFiles/fsearch_qt_gui_test.dir/fsearch_qt_gui_test_autogen/mocs_compilation.cpp.o
+.PHONY : fsearch_qt_gui_test_autogen/mocs_compilation.cpp.o
+
+fsearch_qt_gui_test_autogen/mocs_compilation.i: fsearch_qt_gui_test_autogen/mocs_compilation.cpp.i
+.PHONY : fsearch_qt_gui_test_autogen/mocs_compilation.i
+
+# target to preprocess a source file
+fsearch_qt_gui_test_autogen/mocs_compilation.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/fsearch_qt_gui_test.dir/build.make CMakeFiles/fsearch_qt_gui_test.dir/fsearch_qt_gui_test_autogen/mocs_compilation.cpp.i
+.PHONY : fsearch_qt_gui_test_autogen/mocs_compilation.cpp.i
+
+fsearch_qt_gui_test_autogen/mocs_compilation.s: fsearch_qt_gui_test_autogen/mocs_compilation.cpp.s
+.PHONY : fsearch_qt_gui_test_autogen/mocs_compilation.s
+
+# target to generate assembly for a file
+fsearch_qt_gui_test_autogen/mocs_compilation.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/fsearch_qt_gui_test.dir/build.make CMakeFiles/fsearch_qt_gui_test.dir/fsearch_qt_gui_test_autogen/mocs_compilation.cpp.s
+.PHONY : fsearch_qt_gui_test_autogen/mocs_compilation.cpp.s
+
+fsearch_qt_integration_test_autogen/mocs_compilation.o: fsearch_qt_integration_test_autogen/mocs_compilation.cpp.o
+.PHONY : fsearch_qt_integration_test_autogen/mocs_compilation.o
+
+# target to build an object file
+fsearch_qt_integration_test_autogen/mocs_compilation.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/fsearch_qt_integration_test.dir/build.make CMakeFiles/fsearch_qt_integration_test.dir/fsearch_qt_integration_test_autogen/mocs_compilation.cpp.o
+.PHONY : fsearch_qt_integration_test_autogen/mocs_compilation.cpp.o
+
+fsearch_qt_integration_test_autogen/mocs_compilation.i: fsearch_qt_integration_test_autogen/mocs_compilation.cpp.i
+.PHONY : fsearch_qt_integration_test_autogen/mocs_compilation.i
+
+# target to preprocess a source file
+fsearch_qt_integration_test_autogen/mocs_compilation.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/fsearch_qt_integration_test.dir/build.make CMakeFiles/fsearch_qt_integration_test.dir/fsearch_qt_integration_test_autogen/mocs_compilation.cpp.i
+.PHONY : fsearch_qt_integration_test_autogen/mocs_compilation.cpp.i
+
+fsearch_qt_integration_test_autogen/mocs_compilation.s: fsearch_qt_integration_test_autogen/mocs_compilation.cpp.s
+.PHONY : fsearch_qt_integration_test_autogen/mocs_compilation.s
+
+# target to generate assembly for a file
+fsearch_qt_integration_test_autogen/mocs_compilation.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/fsearch_qt_integration_test.dir/build.make CMakeFiles/fsearch_qt_integration_test.dir/fsearch_qt_integration_test_autogen/mocs_compilation.cpp.s
+.PHONY : fsearch_qt_integration_test_autogen/mocs_compilation.cpp.s
+
 main.o: main.cpp.o
 .PHONY : main.o
 
@@ -165,6 +328,30 @@ main.s: main.cpp.s
 main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/fsearch_qt_client.dir/build.make CMakeFiles/fsearch_qt_client.dir/main.cpp.s
 .PHONY : main.cpp.s
+
+tests/gui_test.o: tests/gui_test.cpp.o
+.PHONY : tests/gui_test.o
+
+# target to build an object file
+tests/gui_test.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/fsearch_qt_gui_test.dir/build.make CMakeFiles/fsearch_qt_gui_test.dir/tests/gui_test.cpp.o
+.PHONY : tests/gui_test.cpp.o
+
+tests/gui_test.i: tests/gui_test.cpp.i
+.PHONY : tests/gui_test.i
+
+# target to preprocess a source file
+tests/gui_test.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/fsearch_qt_gui_test.dir/build.make CMakeFiles/fsearch_qt_gui_test.dir/tests/gui_test.cpp.i
+.PHONY : tests/gui_test.cpp.i
+
+tests/gui_test.s: tests/gui_test.cpp.s
+.PHONY : tests/gui_test.s
+
+# target to generate assembly for a file
+tests/gui_test.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/fsearch_qt_gui_test.dir/build.make CMakeFiles/fsearch_qt_gui_test.dir/tests/gui_test.cpp.s
+.PHONY : tests/gui_test.cpp.s
 
 tools/integration_test.o: tools/integration_test.cpp.o
 .PHONY : tools/integration_test.o
@@ -198,11 +385,30 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
+	@echo "... fsearch_qt_client_autogen"
+	@echo "... fsearch_qt_client_autogen_timestamp_deps"
+	@echo "... fsearch_qt_gui_test_autogen"
+	@echo "... fsearch_qt_gui_test_autogen_timestamp_deps"
+	@echo "... fsearch_qt_integration_test_autogen"
+	@echo "... fsearch_qt_integration_test_autogen_timestamp_deps"
 	@echo "... fsearch_qt_client"
+	@echo "... fsearch_qt_gui_test"
 	@echo "... fsearch_qt_integration_test"
+	@echo "... fsearch_qt_client_autogen/mocs_compilation.o"
+	@echo "... fsearch_qt_client_autogen/mocs_compilation.i"
+	@echo "... fsearch_qt_client_autogen/mocs_compilation.s"
+	@echo "... fsearch_qt_gui_test_autogen/mocs_compilation.o"
+	@echo "... fsearch_qt_gui_test_autogen/mocs_compilation.i"
+	@echo "... fsearch_qt_gui_test_autogen/mocs_compilation.s"
+	@echo "... fsearch_qt_integration_test_autogen/mocs_compilation.o"
+	@echo "... fsearch_qt_integration_test_autogen/mocs_compilation.i"
+	@echo "... fsearch_qt_integration_test_autogen/mocs_compilation.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... tests/gui_test.o"
+	@echo "... tests/gui_test.i"
+	@echo "... tests/gui_test.s"
 	@echo "... tools/integration_test.o"
 	@echo "... tools/integration_test.i"
 	@echo "... tools/integration_test.s"
