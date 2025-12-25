@@ -5,6 +5,8 @@ pub mod entry;
 pub mod index;
 pub mod query;
 mod search;
+pub mod matchers;
+pub mod pcre2_pool;
 
 use index::Index;
 use parking_lot::Mutex;
