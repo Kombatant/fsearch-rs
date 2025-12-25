@@ -4,7 +4,7 @@ fsearch_qt_client: \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/crtbeginS.o \
   CMakeFiles/fsearch_qt_client.dir/main.cpp.o \
   /usr/lib/libQt6Widgets.so.6.10.1 \
-  /tmp/fsearch_target/release/libfsearch_core.a \
+  /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/../target/release/libfsearch_core.a \
   /usr/lib/libpcre2-8.so \
   /usr/lib/libQt6Gui.so.6.10.1 \
   /usr/lib/libGLX.so \
@@ -89,7 +89,7 @@ CMakeFiles/fsearch_qt_client.dir/main.cpp.o:
 
 /usr/lib/libQt6Widgets.so.6.10.1:
 
-/tmp/fsearch_target/release/libfsearch_core.a:
+/home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/../target/release/libfsearch_core.a:
 
 /usr/lib/libpcre2-8.so:
 

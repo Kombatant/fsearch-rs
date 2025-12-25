@@ -54,62 +54,55 @@ static QString applyRangesToHtml(const QString &text, const QJsonArray &rangesAr
 }
 
 extern "C" void result_cb(uint64_t id, const char *name, const char *path, uint64_t size, uint64_t mtime, const char *highlights, void *userdata) {
-    fprintf(stderr, "result_cb: userdata=%p name=%p path=%p highlights=%p\n", userdata, name, path, highlights);
-    fflush(stderr);
+    // Called from Rust search threads. Post to Qt main thread via queued invocation.
     QListWidget *list = static_cast<QListWidget *>(userdata);
-    if (!list) {
-        fprintf(stderr, "result_cb: list is null\n"); fflush(stderr);
-        return;
-    }
+    if (!list) return;
     QString nameStr = QString::fromUtf8(name ? name : "");
     QString pathStr = QString::fromUtf8(path ? path : "");
     QString highlightsJson = QString::fromUtf8(highlights ? highlights : "");
 
-    // Try parsing highlights JSON with expected format. We'll accept either:
-    // 1) object: {"name": [[s,e],...], "path": [[s,e],...]} or
-    // 2) array: [{"field":"name","ranges":[[s,e],...]}, ...]
-    QString nameHtml = nameStr.toHtmlEscaped();
-    QString pathHtml = pathStr.toHtmlEscaped();
-    if (!highlightsJson.isEmpty()) {
-        QJsonParseError err;
-        QJsonDocument doc = QJsonDocument::fromJson(highlightsJson.toUtf8(), &err);
-        if (err.error == QJsonParseError::NoError) {
-            if (doc.isObject()) {
-                QJsonObject obj = doc.object();
-                if (obj.contains("name") && obj.value("name").isArray()) nameHtml = applyRangesToHtml(nameStr, obj.value("name").toArray());
-                if (obj.contains("path") && obj.value("path").isArray()) pathHtml = applyRangesToHtml(pathStr, obj.value("path").toArray());
-            } else if (doc.isArray()) {
-                for (const QJsonValue &v : doc.array()) {
-                    if (!v.isObject()) continue;
-                    QJsonObject o = v.toObject();
-                    QString field = o.value("field").toString();
-                    QJsonArray ranges = o.value("ranges").toArray();
-                    if (field == "name") nameHtml = applyRangesToHtml(nameStr, ranges);
-                    else if (field == "path") pathHtml = applyRangesToHtml(pathStr, ranges);
+    QMetaObject::invokeMethod(QApplication::instance(), [list, nameStr, pathStr, highlightsJson]() {
+        QString nameHtml = nameStr.toHtmlEscaped();
+        QString pathHtml = pathStr.toHtmlEscaped();
+        if (!highlightsJson.isEmpty()) {
+            QJsonParseError err;
+            QJsonDocument doc = QJsonDocument::fromJson(highlightsJson.toUtf8(), &err);
+            if (err.error == QJsonParseError::NoError) {
+                if (doc.isObject()) {
+                    QJsonObject obj = doc.object();
+                    if (obj.contains("name") && obj.value("name").isArray()) nameHtml = applyRangesToHtml(nameStr, obj.value("name").toArray());
+                    if (obj.contains("path") && obj.value("path").isArray()) pathHtml = applyRangesToHtml(pathStr, obj.value("path").toArray());
+                } else if (doc.isArray()) {
+                    for (const QJsonValue &v : doc.array()) {
+                        if (!v.isObject()) continue;
+                        QJsonObject o = v.toObject();
+                        QString field = o.value("field").toString();
+                        QJsonArray ranges = o.value("ranges").toArray();
+                        if (field == "name") nameHtml = applyRangesToHtml(nameStr, ranges);
+                        else if (field == "path") pathHtml = applyRangesToHtml(pathStr, ranges);
+                    }
                 }
+            } else {
+                pathHtml = pathHtml + "<br><small>" + highlightsJson.toHtmlEscaped() + "</small>";
             }
-        } else {
-            // leave escaped raw JSON on second line
-            pathHtml = pathHtml + "<br><small>" + highlightsJson.toHtmlEscaped() + "</small>";
         }
-    }
 
-    // Create list item with two labels (name, path) and render HTML in labels
-    QListWidgetItem *item = new QListWidgetItem(list);
-    QWidget *itemWidget = new QWidget();
-    QVBoxLayout *vlayout = new QVBoxLayout(itemWidget);
-    vlayout->setContentsMargins(4,2,4,2);
-    QLabel *nameLabel = new QLabel(itemWidget);
-    nameLabel->setTextFormat(Qt::RichText);
-    nameLabel->setText(nameHtml);
-    QLabel *pathLabel = new QLabel(itemWidget);
-    pathLabel->setTextFormat(Qt::RichText);
-    pathLabel->setText("<small>" + pathHtml + "</small>");
-    vlayout->addWidget(nameLabel);
-    vlayout->addWidget(pathLabel);
-    item->setSizeHint(itemWidget->sizeHint());
-    list->addItem(item);
-    list->setItemWidget(item, itemWidget);
+        QListWidgetItem *item = new QListWidgetItem(list);
+        QWidget *itemWidget = new QWidget();
+        QVBoxLayout *vlayout = new QVBoxLayout(itemWidget);
+        vlayout->setContentsMargins(4,2,4,2);
+        QLabel *nameLabel = new QLabel(itemWidget);
+        nameLabel->setTextFormat(Qt::RichText);
+        nameLabel->setText(nameHtml);
+        QLabel *pathLabel = new QLabel(itemWidget);
+        pathLabel->setTextFormat(Qt::RichText);
+        pathLabel->setText("<small>" + pathHtml + "</small>");
+        vlayout->addWidget(nameLabel);
+        vlayout->addWidget(pathLabel);
+        item->setSizeHint(itemWidget->sizeHint());
+        list->addItem(item);
+        list->setItemWidget(item, itemWidget);
+    }, Qt::QueuedConnection);
 }
 
 int main(int argc, char **argv) {
@@ -166,23 +159,13 @@ int main(int argc, char **argv) {
     });
 
     uint64_t current_handle = 0;
-    QTimer pollTimer;
-    pollTimer.setInterval(200);
-
-    QObject::connect(&pollTimer, &QTimer::timeout, [&]() {
-        if (current_handle != 0) {
-            fsearch_poll_results_c(current_handle, result_cb, resultsList);
-        }
-    });
+    // No polling timer — we'll use event-driven delivery from Rust.
 
     QObject::connect(searchBtn, &QPushButton::clicked, [&]() {
         resultsList->clear();
         QString q = queryInput->text();
         QByteArray qb = q.toUtf8();
-        current_handle = fsearch_start_search_c(qb.constData());
-        if (current_handle != 0) {
-            pollTimer.start();
-        }
+        current_handle = fsearch_start_search_with_cb_c(qb.constData(), result_cb, resultsList);
     });
 
     w.setWindowTitle("FSearch Qt6 Test Client");

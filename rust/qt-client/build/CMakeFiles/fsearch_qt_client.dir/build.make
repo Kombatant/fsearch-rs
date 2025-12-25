@@ -97,7 +97,7 @@ fsearch_qt_client: CMakeFiles/fsearch_qt_client.dir/main.cpp.o
 fsearch_qt_client: CMakeFiles/fsearch_qt_client.dir/build.make
 fsearch_qt_client: CMakeFiles/fsearch_qt_client.dir/compiler_depend.ts
 fsearch_qt_client: /usr/lib/libQt6Widgets.so.6.10.1
-fsearch_qt_client: /tmp/fsearch_target/release/libfsearch_core.a
+fsearch_qt_client: /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/../target/release/libfsearch_core.a
 fsearch_qt_client: /usr/lib/libpcre2-8.so
 fsearch_qt_client: /usr/lib/libQt6Gui.so.6.10.1
 fsearch_qt_client: /usr/lib/libGLX.so

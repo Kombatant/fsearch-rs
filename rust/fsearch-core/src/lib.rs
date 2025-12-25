@@ -165,6 +165,20 @@ pub extern "C" fn fsearch_start_search_c(query: *const c_char) -> u64 {
 }
 
 #[no_mangle]
+pub extern "C" fn fsearch_start_search_with_cb_c(query: *const c_char, cb: Option<FsearchResultCb>, userdata: *mut c_void) -> u64 {
+    if query.is_null() || cb.is_none() {
+        return 0;
+    }
+    let q = unsafe { CStr::from_ptr(query).to_string_lossy().into_owned() };
+    if let Some(idx) = &*CURRENT_INDEX.lock() {
+        let cbf = cb.unwrap();
+        // delegate to search module which will spawn a worker and invoke cb
+        return search_mod::start_search_with_index_and_cb(idx.clone(), &q, cbf, userdata);
+    }
+    0
+}
+
+#[no_mangle]
 pub extern "C" fn fsearch_poll_results_c(handle: u64, cb: Option<FsearchResultCb>, userdata: *mut c_void) {
     if cb.is_none() {
         return;
