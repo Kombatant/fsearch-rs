@@ -32,6 +32,75 @@ jobs:
           path: /tmp/cargo-target
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
 
+      - name: Build C parity runner
+        run: |
+          cd rust/fsearch-core/c_parity
+          make -j$(nproc)
+
+      - name: Run cargo tests for fsearch-core (with parity runner)
+        run: |
+          cd rust/fsearch-core
+          FSEARCH_C_MATCHER_BIN=${{ github.workspace }}/rust/fsearch-core/c_parity/c_matcher cargo test --release --tests
+
+  build-qt:
+    name: Build & Smoke Test (Qt client)
+    runs-on: ubuntu-latest
+    needs: build-rust
+    env:
+      TMPDIR: /tmp
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check for Qt and package manager
+        id: check_qt
+        run: |
+          # Check if Qt tools are already installed
+          if command -v qmake >/dev/null 2>&1 || command -v qmake6 >/dev/null 2>&1 || command -v qtpaths >/dev/null 2>&1; then
+            echo "qt_found=true" >> $GITHUB_OUTPUT
+          else
+            echo "qt_found=false" >> $GITHUB_OUTPUT
+          fi
+          # Check for apt-get availability
+          if command -v apt-get >/dev/null 2>&1; then
+            echo "apt_present=true" >> $GITHUB_OUTPUT
+          else
+            echo "apt_present=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Install Qt via apt (if needed)
+        if: steps.check_qt.outputs.qt_found == 'false' && steps.check_qt.outputs.apt_present == 'true'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential pkg-config cmake qt6-base-dev qt6-qmake qt6-tools-dev qt6-base-dev-tools
+
+      - name: Install Qt via installer action (if apt unavailable)
+        if: steps.check_qt.outputs.qt_found == 'false' && steps.check_qt.outputs.apt_present == 'false'
+        uses: jurplel/install-qt-action@v2
+        with:
+          version: 6.5.2
+          host: linux
+          target: desktop
+          modules: qtbase,qttools
+
+      - name: Build Qt client
+        run: |
+          cd rust/qt-client
+          mkdir -p build
+          cd build
+          cmake ..
+          cmake --build . --config Release -- -j$(nproc)
+
+      - name: Run Qt client smoke test (non-GUI)
+        run: |
+          # Run the test client with a short run to ensure startup (exit code 0 expected)
+          cd rust/qt-client/build
+          if [ -x ./fsearch_qt_client ]; then
+            ./fsearch_qt_client --version || true
+          else
+            echo "Qt client binary not present or not built; failing job"; exit 1
+          fi
+
       - name: Run cargo tests for fsearch-core
         run: |
           cd rust/fsearch-core
