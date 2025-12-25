@@ -38,6 +38,37 @@ pub struct QueryMatcher {
     pool: PatternPool,
 }
 
+/// Normalize capture ranges: sort, remove duplicates, and merge overlaps/adjacent.
+fn normalize_ranges(mut ranges: Vec<(usize, usize)>) -> Vec<(usize, usize)> {
+    if ranges.is_empty() { return ranges; }
+    ranges.sort_unstable_by_key(|r| r.0);
+    let mut out = Vec::with_capacity(ranges.len());
+    let mut cur = ranges[0];
+    for &(s,e) in ranges.iter().skip(1) {
+        if s <= cur.1 { // overlap or adjacent
+            if e > cur.1 { cur.1 = e; }
+        } else {
+            out.push(cur);
+            cur = (s,e);
+        }
+    }
+    out.push(cur);
+    out
+}
+
+/// Collect a representative field name from the compiled node subtree, if any.
+fn collect_field_from_compiled(node: &CompiledNode) -> Option<String> {
+    match node {
+        CompiledNode::Leaf { field, .. } => field.clone(),
+        CompiledNode::Compare { field, .. } => field.clone(),
+        CompiledNode::Range { field, .. } => field.clone(),
+        CompiledNode::Function { .. } => None,
+        CompiledNode::Not(inner) => collect_field_from_compiled(inner),
+        CompiledNode::Or(a, b) => collect_field_from_compiled(a).or_else(|| collect_field_from_compiled(b)),
+        CompiledNode::And(a, b) => collect_field_from_compiled(a).or_else(|| collect_field_from_compiled(b)),
+    }
+}
+
 impl QueryMatcher {
     pub fn new(pool: PatternPool) -> Self {
         QueryMatcher { pool }
@@ -237,7 +268,10 @@ impl QueryMatcher {
             }
         }
     }
+
 }
+
+
 
 /// Metadata about a match suitable for UI highlighting.
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -254,14 +288,16 @@ impl QueryMatcher {
     pub fn captures_meta(&self, compiled: &CompiledNode, text: &[u8]) -> Vec<MatchMeta> {
         match compiled {
             CompiledNode::Leaf { pat: _, negated: _, field, .. } => {
-                let ranges = self.captures(compiled, text);
+                let mut ranges = self.captures(compiled, text);
+                ranges = normalize_ranges(ranges);
                 if ranges.is_empty() { return vec![]; }
                 vec![MatchMeta { field: field.clone(), ranges }]
             }
             CompiledNode::Compare { field, .. } => vec![MatchMeta { field: field.clone(), ranges: vec![] }],
             CompiledNode::Range { field, .. } => vec![MatchMeta { field: field.clone(), ranges: vec![] }],
             CompiledNode::Function { .. } => {
-                let ranges = self.captures(compiled, text);
+                let mut ranges = self.captures(compiled, text);
+                ranges = normalize_ranges(ranges);
                 if ranges.is_empty() { return vec![]; }
                 vec![MatchMeta { field: None, ranges }]
             }
@@ -270,12 +306,28 @@ impl QueryMatcher {
                 let mut a_m = self.captures_meta(a, text);
                 let b_m = self.captures_meta(b, text);
                 a_m.extend(b_m);
+                // normalize ranges per-meta and inherit field when absent
+                let inherited = collect_field_from_compiled(compiled);
+                for m in a_m.iter_mut() {
+                    m.ranges = normalize_ranges(std::mem::take(&mut m.ranges));
+                    if m.field.is_none() {
+                        if let Some(ref f) = inherited { m.field = Some(f.clone()); }
+                    }
+                }
                 a_m
             }
             CompiledNode::Or(a, b) => {
                 let a_m = self.captures_meta(a, text);
                 if !a_m.is_empty() { return a_m; }
-                self.captures_meta(b, text)
+                let mut bm = self.captures_meta(b, text);
+                let inherited = collect_field_from_compiled(compiled);
+                for m in bm.iter_mut() {
+                    m.ranges = normalize_ranges(std::mem::take(&mut m.ranges));
+                    if m.field.is_none() {
+                        if let Some(ref f) = inherited { m.field = Some(f.clone()); }
+                    }
+                }
+                bm
             }
         }
     }
