@@ -1,8 +1,14 @@
 use crate::matchers::Matcher;
 use crate::pcre2_backend::Pcre2Compiled;
 use pcre2::Error as Pcre2Error;
-use std::sync::{Arc, Mutex};
+use std::sync::Arc;
 use std::collections::VecDeque;
+use std::cell::RefCell;
+
+// Use a per-thread pool to reduce contention during heavy matching.
+thread_local! {
+    static TLS_POOL: RefCell<VecDeque<Arc<dyn CompiledPattern>>> = RefCell::new(VecDeque::new());
+}
 
 /// Trait describing a compiled pattern and matching operations.
 pub trait CompiledPattern: Send + Sync {
@@ -22,45 +28,43 @@ impl CompiledPattern for Pcre2Compiled {
 
 /// A per-thread pool of compiled patterns. In the final implementation,
 /// this will manage PCRE2 compiled regexes and per-thread match_data.
-#[derive(Clone)]
-pub struct PatternPool {
-    inner: Arc<Mutex<VecDeque<Arc<dyn CompiledPattern>>>>,
-}
+#[derive(Clone, Copy, Default)]
+pub struct PatternPool;
 
 impl PatternPool {
-    pub fn new() -> Self {
-        PatternPool { inner: Arc::new(Mutex::new(VecDeque::new())) }
-    }
+    pub fn new() -> Self { PatternPool }
 
-    /// Acquire a compiled pattern for use. If the pool has a cached one,
-    /// return it; otherwise compile a new one with the provided factory.
+    /// Acquire a compiled pattern for use from the thread-local pool.
+    /// If none is available, call the provided factory.
     pub fn acquire<F>(&self, factory: F) -> Arc<dyn CompiledPattern>
     where
         F: FnOnce() -> Arc<dyn CompiledPattern>,
     {
-        if let Some(p) = self.inner.lock().unwrap().pop_front() {
-            p
-        } else {
-            factory()
-        }
+        TLS_POOL.with(|q| {
+            let mut q = q.borrow_mut();
+            if let Some(p) = q.pop_front() { p } else { factory() }
+        })
     }
 
     /// Convenience: acquire a PCRE2-compiled pattern for `pattern`.
     /// Compiles a new `Pcre2Compiled` if the pool is empty.
     pub fn acquire_pcre2(&self, pattern: &str) -> Result<Arc<dyn CompiledPattern>, Pcre2Error> {
-        // try to pop a cached compiled pattern of any type
-        if let Some(p) = self.inner.lock().unwrap().pop_front() {
-            return Ok(p);
-        }
-        // otherwise compile a new PCRE2 pattern
-        let pc = Pcre2Compiled::new(pattern)?;
-        Ok(Arc::new(pc))
+        TLS_POOL.with(|q| {
+            let mut q = q.borrow_mut();
+            if let Some(p) = q.pop_front() {
+                return Ok(p);
+            }
+            // otherwise compile a new PCRE2 pattern
+            let pc = Pcre2Compiled::new(pattern)?;
+            Ok(Arc::new(pc))
+        })
     }
 
-    /// Return a compiled pattern to the pool for reuse.
+    /// Return a compiled pattern to the thread-local pool for reuse.
     pub fn release(&self, pat: Arc<dyn CompiledPattern>) {
-        let mut q = self.inner.lock().unwrap();
-        q.push_back(pat);
+        TLS_POOL.with(|q| {
+            q.borrow_mut().push_back(pat);
+        })
     }
 }
 

@@ -410,4 +410,35 @@ mod tests {
             assert_eq!(&b"xxbaryy"[sa..ea], b"bar");
         }
     }
+
+    #[test]
+    fn matcher_anchored_literal() {
+        let pool = PatternPool::new();
+        let qm = QueryMatcher::new(pool);
+        // anchored modifier should require full-string match
+        let node = Node::Modified(Box::new(Node::Word("foo".to_string())), vec!("anchored".to_string()));
+        let compiled = qm.compile(&node).unwrap();
+        assert!(qm.is_match(&compiled, b"foo"));
+        assert!(!qm.is_match(&compiled, b"this is foo"));
+        assert!(!qm.is_match(&compiled, b"foobar"));
+    }
+
+    #[test]
+    fn matcher_group_captures() {
+        let pool = PatternPool::new();
+        let qm = QueryMatcher::new(pool);
+        // explicit regex with groups
+        let node = Node::Regex("(ab)([0-9]+)".to_string());
+        let compiled = qm.compile(&node).unwrap();
+        assert!(qm.is_match(&compiled, b"xxab123yy"));
+        let caps = qm.captures(&compiled, b"xxab123yy");
+        // expect at least the full match and capture groups
+        assert!(caps.len() >= 1);
+        // ensure captured bytes correspond to some substring
+        let mut found = false;
+        for (s,e) in caps.iter() {
+            if &b"xxab123yy"[*s..*e] == b"ab123" { found = true; }
+        }
+        assert!(found);
+    }
 }
