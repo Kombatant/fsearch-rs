@@ -1,0 +1,7 @@
+{
+	"InstallScripts" : 
+	[
+		"/home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build/cmake_install.cmake"
+	],
+	"Parallel" : false
+}
