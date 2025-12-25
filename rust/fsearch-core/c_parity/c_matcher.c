@@ -6,6 +6,8 @@
 int main(int argc, char **argv) {
     const char *pattern = NULL;
     const char *text = NULL;
+    const char *text_file = NULL;
+    int use_jit = 0;
     if (argc == 3) {
         pattern = argv[1];
         text = argv[2];
@@ -13,15 +15,41 @@ int main(int argc, char **argv) {
         for (int i = 1; i < argc; i++) {
             if (strcmp(argv[i], "--pattern") == 0 && i+1 < argc) { pattern = argv[++i]; }
             else if (strcmp(argv[i], "--text") == 0 && i+1 < argc) { text = argv[++i]; }
+            else if (strcmp(argv[i], "--text-file") == 0 && i+1 < argc) { text_file = argv[++i]; }
+            else if (strcmp(argv[i], "--jit") == 0) { use_jit = 1; }
             else if (!pattern) { pattern = argv[i]; }
             else if (!text) { text = argv[i]; }
         }
     }
-    if (!pattern || !text) {
+    if (!pattern && !text) {
         fprintf(stderr, "usage: %s [--pattern PATTERN] [--text TEXT]  or: %s PATTERN TEXT\n", argv[0], argv[0]);
         // exit success so CI parity test can skip if needed
         printf("[]\n");
         return 0;
+    }
+
+    char *owned_text = NULL;
+    if (!text && text_file) {
+        FILE *f = fopen(text_file, "rb");
+        if (!f) {
+            fprintf(stderr, "failed to open text file: %s\n", text_file);
+            printf("[]\n");
+            return 0;
+        }
+        if (fseek(f, 0, SEEK_END) != 0) {
+            fclose(f);
+            printf("[]\n");
+            return 0;
+        }
+        long sz = ftell(f);
+        rewind(f);
+        if (sz < 0) sz = 0;
+        owned_text = (char*)malloc((size_t)sz + 1);
+        if (!owned_text) { fclose(f); printf("[]\n"); return 0; }
+        size_t r = fread(owned_text, 1, (size_t)sz, f);
+        owned_text[r] = '\0';
+        fclose(f);
+        text = owned_text;
     }
 
     int errornumber;
@@ -30,6 +58,14 @@ int main(int argc, char **argv) {
     if (!re) {
         printf("[]\n");
         return 0;
+    }
+
+    if (use_jit) {
+        int jit_rc = pcre2_jit_compile(re, PCRE2_JIT_COMPLETE);
+        if (jit_rc != 0) {
+            // if JIT compilation fails, continue without JIT
+            // fprintf(stderr, "pcre2_jit_compile failed: %d\n", jit_rc);
+        }
     }
 
     pcre2_match_data *match_data = pcre2_match_data_create_from_pattern(re, NULL);
@@ -56,5 +92,6 @@ int main(int argc, char **argv) {
 
     pcre2_match_data_free(match_data);
     pcre2_code_free(re);
+    if (owned_text) free(owned_text);
     return 0;
 }
