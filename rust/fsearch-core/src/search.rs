@@ -1,4 +1,7 @@
 use crate::ffi::SearchResult as FfiSearchResult;
+use crate::query::Parser;
+use crate::query::QueryMatcher;
+use crate::pcre2_pool::PatternPool;
 use crate::index::Index;
 use crossbeam_channel::{unbounded, Receiver, Sender};
 use once_cell::sync::Lazy;
@@ -39,16 +42,21 @@ pub fn start_search_with_index(idx: Arc<Index>, query: &str) -> u64 {
             return;
         }
 
-        // prepare matcher
+        // Try to parse query into AST; if successful compile via QueryMatcher
+        let mut compiled_opt: Option<crate::query::matcher::CompiledNode> = None;
+        let pool = PatternPool::new();
+        if let Ok(mut parser) = std::panic::catch_unwind(|| Parser::new(&q)) {
+            if let Some(node) = parser.parse() {
+                if let Ok(comp) = QueryMatcher::new(pool.clone()).compile(&node) {
+                    compiled_opt = Some(comp);
+                }
+            }
+        }
+
+        // prepare legacy regex/substring fallback
         let is_regex = q.starts_with("re:");
         let pattern = if is_regex { q[3..].to_string() } else { q.clone() };
-        let regex: Option<Regex> = if is_regex {
-            Regex::new(&pattern).ok()
-        } else {
-            None
-        };
-
-        // prepare lowercase pattern once
+        let regex: Option<Regex> = if is_regex { Regex::new(&pattern).ok() } else { None };
         let lower_pat = pattern.to_lowercase();
 
         // parallel iterate entries
@@ -56,22 +64,37 @@ pub fn start_search_with_index(idx: Arc<Index>, query: &str) -> u64 {
             if cancel_clone.load(Ordering::SeqCst) {
                 return;
             }
-            let matched = if let Some(re) = &regex {
-                re.is_match(&e.path) || re.is_match(&e.name)
+            // If we have a compiled query, use it for matching and metadata
+            if let Some(compiled) = &compiled_opt {
+                let text = format!("{}\n{}", e.name, e.path);
+                let bytes = text.as_bytes();
+                if QueryMatcher::new(pool.clone()).is_match(compiled, bytes) {
+                    let metas = QueryMatcher::new(pool.clone()).captures_meta(compiled, bytes);
+                    // serialize metas to simple JSON array
+                    let mut parts = Vec::new();
+                    for m in metas {
+                        let mut ranges_parts = Vec::new();
+                        for (a,b) in m.ranges {
+                            ranges_parts.push(format!("[{},{}]", a, b));
+                        }
+                        let field_json = match m.field { Some(f) => format!("\"{}\"", f), None => "null".to_string() };
+                        parts.push(format!("{{\"field\":{},\"ranges\":[{}]}}", field_json, ranges_parts.join(",")));
+                    }
+                    let highlights = format!("[{}]", parts.join(","));
+                    let res = FfiSearchResult { id: e.id, name: e.name.clone(), path: e.path.clone(), size: e.size, mtime: e.mtime, highlights };
+                    let _ = s.send(res);
+                }
             } else {
-                // case-insensitive substring search on normalized fields
-                e.normalized.contains(&lower_pat) || e.path.to_lowercase().contains(&lower_pat)
-            };
-            if matched {
-                let res = FfiSearchResult {
-                    id: e.id,
-                    name: e.name.clone(),
-                    path: e.path.clone(),
-                    size: e.size,
-                    mtime: e.mtime,
+                let matched = if let Some(re) = &regex {
+                    re.is_match(&e.path) || re.is_match(&e.name)
+                } else {
+                    // case-insensitive substring search on normalized fields
+                    e.normalized.contains(&lower_pat) || e.path.to_lowercase().contains(&lower_pat)
                 };
-                // ignore send errors (receiver closed)
-                let _ = s.send(res);
+                if matched {
+                    let res = FfiSearchResult { id: e.id, name: e.name.clone(), path: e.path.clone(), size: e.size, mtime: e.mtime, highlights: String::new() };
+                    let _ = s.send(res);
+                }
             }
         });
 

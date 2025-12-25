@@ -26,6 +26,7 @@ mod ffi {
         path: String,
         size: u64,
         mtime: u64,
+        highlights: String,
     }
 
     extern "Rust" {
@@ -75,6 +76,7 @@ pub fn index_list_entries(index: &Index) -> Vec<ffi::SearchResult> {
             path: e.path.clone(),
             size: e.size,
             mtime: e.mtime,
+            highlights: String::new(),
         })
         .collect()
 }
@@ -130,7 +132,7 @@ pub extern "C" fn fsearch_index_free(ptr: *mut Index) {
     unsafe { drop(Box::from_raw(ptr)); }
 }
 
-pub type FsearchResultCb = extern "C" fn(u64, *const c_char, *const c_char, u64, u64, *mut c_void);
+pub type FsearchResultCb = extern "C" fn(u64, *const c_char, *const c_char, u64, u64, *const c_char, *mut c_void);
 
 #[no_mangle]
 pub extern "C" fn fsearch_index_list_entries_c(ptr: *mut Index, cb: Option<FsearchResultCb>, userdata: *mut c_void) {
@@ -143,7 +145,8 @@ pub extern "C" fn fsearch_index_list_entries_c(ptr: *mut Index, cb: Option<Fsear
     for r in list {
         let name_c = std::ffi::CString::new(r.name).unwrap_or_default();
         let path_c = std::ffi::CString::new(r.path).unwrap_or_default();
-        cb(r.id, name_c.as_ptr(), path_c.as_ptr(), r.size, r.mtime, userdata);
+        let highlights_c = std::ffi::CString::new(r.highlights).unwrap_or_default();
+        cb(r.id, name_c.as_ptr(), path_c.as_ptr(), r.size, r.mtime, highlights_c.as_ptr(), userdata);
         // CString owned locally; ok because callback should copy if needed
     }
 }
@@ -167,7 +170,8 @@ pub extern "C" fn fsearch_poll_results_c(handle: u64, cb: Option<FsearchResultCb
     for r in list {
         let name_c = std::ffi::CString::new(r.name).unwrap_or_default();
         let path_c = std::ffi::CString::new(r.path).unwrap_or_default();
-        cb(r.id, name_c.as_ptr(), path_c.as_ptr(), r.size, r.mtime, userdata);
+        let highlights_c = std::ffi::CString::new(r.highlights).unwrap_or_default();
+        cb(r.id, name_c.as_ptr(), path_c.as_ptr(), r.size, r.mtime, highlights_c.as_ptr(), userdata);
     }
 }
 
