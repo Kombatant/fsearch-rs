@@ -18,6 +18,7 @@ type HandleId = u64;
 pub struct SearchContext {
     pub receiver: Receiver<FfiSearchResult>,
     pub cancel_flag: Arc<AtomicBool>,
+    pub join_handle: Option<std::thread::JoinHandle<()>>,
 }
 
 static HANDLE_MAP: Lazy<Mutex<HashMap<HandleId, SearchContext>>> = Lazy::new(|| Mutex::new(HashMap::new()));
@@ -37,7 +38,7 @@ pub fn start_search_with_index(idx: Arc<Index>, query: &str) -> u64 {
     let q = query.to_string();
     let cancel_clone = cancel.clone();
     // spawn a thread to run the search and stream results into sender
-    std::thread::spawn(move || {
+    let join = std::thread::spawn(move || {
         if idx.entries.is_empty() {
             drop(s);
             return;
@@ -71,9 +72,19 @@ pub fn start_search_with_index(idx: Arc<Index>, query: &str) -> u64 {
                 let bytes = text.as_bytes();
                 if QueryMatcher::new(pool.clone()).is_match(compiled, bytes) {
                     let metas = QueryMatcher::new(pool.clone()).captures_meta(compiled, bytes);
+                    // prefer compiled node field when metas don't specify one
+                    let compiled_field = match compiled {
+                        crate::query::matcher::CompiledNode::Leaf { field, .. } => field.clone(),
+                        crate::query::matcher::CompiledNode::Compare { field, .. } => field.clone(),
+                        crate::query::matcher::CompiledNode::Range { field, .. } => field.clone(),
+                        _ => None,
+                    };
                     // serialize metas to simple JSON array
                     let mut parts = Vec::new();
-                    for m in metas {
+                    for mut m in metas {
+                        if m.field.is_none() {
+                            m.field = compiled_field.clone();
+                        }
                         let mut ranges_parts = Vec::new();
                         for (a,b) in m.ranges {
                             ranges_parts.push(format!("[{},{}]", a, b));
@@ -104,7 +115,7 @@ pub fn start_search_with_index(idx: Arc<Index>, query: &str) -> u64 {
     });
 
     let id = next_handle_id();
-    let ctx = SearchContext { receiver: r, cancel_flag: cancel };
+    let ctx = SearchContext { receiver: r, cancel_flag: cancel, join_handle: Some(join) };
     HANDLE_MAP.lock().insert(id, ctx);
     id
 }
@@ -234,7 +245,6 @@ mod tests {
 
         // wait for at least one highlight message
         let msg = rx.recv_timeout(Duration::from_secs(5)).expect("got highlight JSON");
-        eprintln!("DEBUG received: {}", msg);
         let wrapper: Value = serde_json::from_str(&msg).expect("valid wrapper json");
         let name = wrapper.get("name").and_then(|v| v.as_str()).unwrap_or("");
         let highlights_str = wrapper.get("highlights").and_then(|v| v.as_str()).unwrap_or("");
@@ -271,6 +281,9 @@ mod tests {
         }
         assert!(found, "expected a name-field ranges entry matching 'test'");
 
+        // cancel search worker and allow it to exit before dropping userdata
+        crate::cancel_search(handle);
+        std::thread::sleep(Duration::from_millis(50));
         // cleanup boxed sender
         unsafe { drop(Box::from_raw(tx_box)); }
     }
@@ -305,7 +318,7 @@ mod tests {
             }
         }
 
-        let q = CString::new("test").unwrap();
+        let q = CString::new("path:test").unwrap();
         let handle = crate::fsearch_start_search_with_cb_c(q.as_ptr(), Some(cb), tx_box as *mut std::os::raw::c_void);
         assert!(handle != 0);
 
@@ -320,11 +333,11 @@ mod tests {
         assert!(!arr.is_empty());
 
         // Look for a ranges entry that maps to substring "test" in `path`
+        // and ensure the metadata explicitly marks `field` == "path"
         let mut found = false;
         for it in arr.iter() {
-            // field may be explicitly "path" or null; accept either
             let field_opt = it.get("field").and_then(|f| f.as_str());
-            if field_opt == Some("path") || field_opt.is_none() {
+            if field_opt == Some("path") {
                 if let Some(ranges) = it.get("ranges") {
                     if ranges.is_array() && !ranges.as_array().unwrap().is_empty() {
                         let r = ranges.as_array().unwrap()[0].as_array().unwrap();
@@ -354,6 +367,9 @@ mod tests {
             }
         }
 
+        // cancel search worker and allow it to exit before dropping userdata
+        crate::cancel_search(handle);
+        std::thread::sleep(Duration::from_millis(50));
         // cleanup boxed sender
         unsafe { drop(Box::from_raw(tx_box)); }
 
@@ -373,7 +389,7 @@ pub fn start_search_with_index_and_cb(idx: Arc<Index>, query: &str, cb: extern "
     let userdata_usize = userdata as usize;
 
     // Spawn worker thread that calls cb directly for matches.
-    std::thread::spawn(move || {
+    let join = std::thread::spawn(move || {
         if idx.entries.is_empty() { return; }
 
         let mut compiled_opt: Option<crate::query::matcher::CompiledNode> = None;
@@ -398,9 +414,19 @@ pub fn start_search_with_index_and_cb(idx: Arc<Index>, query: &str, cb: extern "
                 let bytes = text.as_bytes();
                 if QueryMatcher::new(pool.clone()).is_match(compiled, bytes) {
                     let metas = QueryMatcher::new(pool.clone()).captures_meta(compiled, bytes);
+                    // prefer compiled node field when metas don't specify one
+                    let compiled_field = match compiled {
+                        crate::query::matcher::CompiledNode::Leaf { field, .. } => field.clone(),
+                        crate::query::matcher::CompiledNode::Compare { field, .. } => field.clone(),
+                        crate::query::matcher::CompiledNode::Range { field, .. } => field.clone(),
+                        _ => None,
+                    };
                     // Build highlights JSON using UTF-16 grapheme-safe boundaries
                     let mut parts = Vec::new();
-                    for m in metas {
+                    for mut m in metas {
+                        if m.field.is_none() {
+                            m.field = compiled_field.clone();
+                        }
                         let mut ranges_parts = Vec::new();
                         for (a,b) in m.ranges {
                             let s = a;
@@ -436,7 +462,7 @@ pub fn start_search_with_index_and_cb(idx: Arc<Index>, query: &str, cb: extern "
         }
     });
 
-    let ctx = SearchContext { receiver: crossbeam_channel::unbounded().1 /*unused*/, cancel_flag: cancel };
+    let ctx = SearchContext { receiver: crossbeam_channel::unbounded().1 /*unused*/, cancel_flag: cancel, join_handle: Some(join) };
     HANDLE_MAP.lock().insert(id, ctx);
     id
 }
@@ -463,9 +489,14 @@ pub fn poll_results(handle: u64) -> Vec<FfiSearchResult> {
 }
 
 pub fn cancel_search(handle: u64) {
-    let map = HANDLE_MAP.lock();
-    if let Some(ctx) = map.get(&handle) {
+    // Set cancel flag and join the worker thread if present to ensure it exits
+    let mut map = HANDLE_MAP.lock();
+    if let Some(ctx) = map.remove(&handle) {
         ctx.cancel_flag.store(true, Ordering::SeqCst);
+        if let Some(join) = ctx.join_handle {
+            // drop lock while joining
+            drop(map);
+            let _ = join.join();
+        }
     }
-    // don't remove immediately; let poll_results clean up
 }
