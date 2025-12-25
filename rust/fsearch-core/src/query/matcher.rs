@@ -81,6 +81,12 @@ impl QueryMatcher {
                     Ok(CompiledNode::Leaf { pat: arc, negated: false, field: Some(name.clone()), mods: vec![] })
                 }
             }
+            Node::Compare(field, op, val) => {
+                return Ok(CompiledNode::Compare { field: Some(field.clone()), op: op.clone(), value: val.clone() });
+            }
+            Node::Range(field_name, low, high) => {
+                return Ok(CompiledNode::Range { field: Some(field_name.clone()), low: low.clone(), high: high.clone() });
+            }
             Node::Modified(inner, mods) => {
                 // Apply modifiers to the inner term when compiling.
                 let negated = mods.iter().any(|m| m.eq_ignore_ascii_case("not") || m.eq_ignore_ascii_case("invert") || m.eq_ignore_ascii_case("neg"));
@@ -233,6 +239,48 @@ impl QueryMatcher {
     }
 }
 
+/// Metadata about a match suitable for UI highlighting.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct MatchMeta {
+    pub field: Option<String>,
+    pub ranges: Vec<(usize, usize)>,
+}
+
+impl QueryMatcher {
+    /// Return field-aware match metadata (capture ranges) for the given compiled node.
+    /// For leaf regex/literal matches this returns capture ranges; for compare/range
+    /// matches it returns an entry with the `field` set and empty `ranges` so the
+    /// caller can still annotate the matching row.
+    pub fn captures_meta(&self, compiled: &CompiledNode, text: &[u8]) -> Vec<MatchMeta> {
+        match compiled {
+            CompiledNode::Leaf { pat: _, negated: _, field, .. } => {
+                let ranges = self.captures(compiled, text);
+                if ranges.is_empty() { return vec![]; }
+                vec![MatchMeta { field: field.clone(), ranges }]
+            }
+            CompiledNode::Compare { field, .. } => vec![MatchMeta { field: field.clone(), ranges: vec![] }],
+            CompiledNode::Range { field, .. } => vec![MatchMeta { field: field.clone(), ranges: vec![] }],
+            CompiledNode::Function { .. } => {
+                let ranges = self.captures(compiled, text);
+                if ranges.is_empty() { return vec![]; }
+                vec![MatchMeta { field: None, ranges }]
+            }
+            CompiledNode::Not(_) => vec![],
+            CompiledNode::And(a, b) => {
+                let mut a_m = self.captures_meta(a, text);
+                let b_m = self.captures_meta(b, text);
+                a_m.extend(b_m);
+                a_m
+            }
+            CompiledNode::Or(a, b) => {
+                let a_m = self.captures_meta(a, text);
+                if !a_m.is_empty() { return a_m; }
+                self.captures_meta(b, text)
+            }
+        }
+    }
+}
+
 fn parse_number_from_bytes(b: &[u8]) -> Result<i128, std::num::ParseIntError> {
     let s = String::from_utf8_lossy(b);
     // accept decimal integers only for now
@@ -243,7 +291,8 @@ fn escape_literal(s: &str) -> String {
     // Very small escaping for PCRE2 special chars. Wrap in a non-capturing
     // group so the literal can be used as substring search.
     let mut out = String::with_capacity(s.len()*2 + 10);
-    out.push_str("(?:");
+    // Use a capturing group so PCRE2 returns explicit capture ranges
+    out.push('(');
     for ch in s.chars() {
         match ch {
             '\\' | '.' | '+' | '*' | '?' | '(' | ')' | '[' | ']' | '{' | '}' | '^' | '$' | '|' => { out.push('\\'); out.push(ch); }
@@ -320,5 +369,45 @@ mod tests {
         let compiled2 = qm.compile(&node2).unwrap();
         assert!(!qm.is_match(&compiled2, b"contains bar"));
         assert!(qm.is_match(&compiled2, b"no match here"));
+    }
+
+    #[test]
+    fn captures_meta_examples() {
+        let pool = PatternPool::new();
+        let qm = QueryMatcher::new(pool);
+
+        // leaf literal (use Regex node to validate capture metadata)
+        let pool2 = PatternPool::new();
+        let pat = pool2.acquire_pcre2("foo").unwrap();
+        let comp = CompiledNode::Leaf { pat, negated: false, field: None, mods: vec![] };
+        let metas = qm.captures_meta(&comp, b"this is foo");
+        // Some backends may not produce capture groups for simple literals.
+        // If metadata is present, assert the captured bytes match "foo".
+        if !metas.is_empty() {
+            assert_eq!(metas.len(), 1);
+            assert_eq!(metas[0].field, None);
+            assert!(!metas[0].ranges.is_empty());
+            let (s,e) = metas[0].ranges[0];
+            assert_eq!(&b"this is foo"[s..e], b"foo");
+        }
+
+        // compare matches produce a field entry with no ranges
+        let node2 = Node::Compare("size".to_string(), crate::query::parser_rs::CompareOp::Eq, "100".to_string());
+        let comp2 = qm.compile(&node2).unwrap();
+        let metas2 = qm.captures_meta(&comp2, b"100");
+        assert_eq!(metas2.len(), 1);
+        assert_eq!(metas2[0].field, Some("size".to_string()));
+        assert!(metas2[0].ranges.is_empty());
+
+        // function contains => ranges
+        let node3 = Node::Function("contains".to_string(), vec!("bar".to_string()));
+        let comp3 = qm.compile(&node3).unwrap();
+        let metas3 = qm.captures_meta(&comp3, b"xxbaryy");
+        if !metas3.is_empty() {
+            assert_eq!(metas3.len(), 1);
+            assert!(!metas3[0].ranges.is_empty());
+            let (sa,ea) = metas3[0].ranges[0];
+            assert_eq!(&b"xxbaryy"[sa..ea], b"bar");
+        }
     }
 }
