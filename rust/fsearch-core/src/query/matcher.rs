@@ -68,34 +68,35 @@ impl QueryMatcher {
             }
             Node::Modified(inner, mods) => {
                 // Apply modifiers to the inner term when compiling.
+                let negated = mods.iter().any(|m| m.eq_ignore_ascii_case("not") || m.eq_ignore_ascii_case("invert") || m.eq_ignore_ascii_case("neg"));
                 match &**inner {
                     Node::Word(s) => {
                         let pattern = build_pattern_for_literal(s, mods);
                         let arc = self.pool.acquire_pcre2(&pattern)?;
-                        Ok(CompiledNode::Leaf { pat: arc, negated: false, field: None, mods: mods.clone() })
+                        Ok(CompiledNode::Leaf { pat: arc, negated, field: None, mods: mods.clone() })
                     }
                     Node::Regex(pat) => {
                         let pattern = build_pattern_for_regex(pat, mods);
                         let arc = self.pool.acquire_pcre2(&pattern)?;
-                        Ok(CompiledNode::Leaf { pat: arc, negated: false, field: None, mods: mods.clone() })
+                        Ok(CompiledNode::Leaf { pat: arc, negated, field: None, mods: mods.clone() })
                     }
                     Node::Field(name, term) => {
                         if term.len() >= 2 && term.starts_with('/') && term.ends_with('/') {
                             let pat = term[1..term.len()-1].to_string();
                             let pattern = build_pattern_for_regex(&pat, mods);
                             let arc = self.pool.acquire_pcre2(&pattern)?;
-                            Ok(CompiledNode::Leaf { pat: arc, negated: false, field: Some(name.clone()), mods: mods.clone() })
+                            Ok(CompiledNode::Leaf { pat: arc, negated, field: Some(name.clone()), mods: mods.clone() })
                         } else {
                             let pattern = build_pattern_for_literal(term, mods);
                             let arc = self.pool.acquire_pcre2(&pattern)?;
-                            Ok(CompiledNode::Leaf { pat: arc, negated: false, field: Some(name.clone()), mods: mods.clone() })
+                            Ok(CompiledNode::Leaf { pat: arc, negated, field: Some(name.clone()), mods: mods.clone() })
                         }
                     }
                     other => {
                         let s = format!("{:?}", other);
                         let pattern = build_pattern_for_literal(&s, mods);
                         let arc = self.pool.acquire_pcre2(&pattern)?;
-                        Ok(CompiledNode::Leaf { pat: arc, negated: false, field: None, mods: mods.clone() })
+                        Ok(CompiledNode::Leaf { pat: arc, negated, field: None, mods: mods.clone() })
                     }
                 }
             }
@@ -209,5 +210,20 @@ mod tests {
         assert!(qm.is_match(&compiled, b"xxab123yy"));
         let caps = qm.captures(&compiled, b"xxab123yy");
         assert!(caps.len() >= 1);
+    }
+
+    #[test]
+    fn matcher_icase_and_not() {
+        let pool = PatternPool::new();
+        let qm = QueryMatcher::new(pool);
+        // icase modifier should make match case-insensitive
+        let node = Node::Modified(Box::new(Node::Word("Foo".to_string())), vec!["icase".to_string()]);
+        let compiled = qm.compile(&node).unwrap();
+        assert!(qm.is_match(&compiled, b"this is foo"));
+        // not modifier should invert the match
+        let node2 = Node::Modified(Box::new(Node::Word("bar".to_string())), vec!["not".to_string()]);
+        let compiled2 = qm.compile(&node2).unwrap();
+        assert!(!qm.is_match(&compiled2, b"contains bar"));
+        assert!(qm.is_match(&compiled2, b"no match here"));
     }
 }
