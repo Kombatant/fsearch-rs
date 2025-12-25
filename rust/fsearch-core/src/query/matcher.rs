@@ -12,6 +12,7 @@ pub enum CompiledNode {
         pat: Arc<dyn CompiledPattern>,
         negated: bool,
         field: Option<String>,
+        mods: Vec<String>,
     },
     And(Box<CompiledNode>, Box<CompiledNode>),
     Or(Box<CompiledNode>, Box<CompiledNode>),
@@ -33,13 +34,16 @@ impl QueryMatcher {
     pub fn compile(&self, node: &Node) -> Result<CompiledNode, pcre2::Error> {
         match node {
             Node::Word(s) => {
-                let escaped = escape_literal(s);
-                let arc = self.pool.acquire_pcre2(&escaped)?;
-                Ok(CompiledNode::Leaf { pat: arc, negated: false, field: None })
+                let empty: Vec<String> = Vec::new();
+                let pattern = build_pattern_for_literal(s, &empty);
+                let arc = self.pool.acquire_pcre2(&pattern)?;
+                Ok(CompiledNode::Leaf { pat: arc, negated: false, field: None, mods: vec![] })
             }
             Node::Regex(pat) => {
-                let arc = self.pool.acquire_pcre2(pat)?;
-                Ok(CompiledNode::Leaf { pat: arc, negated: false, field: None })
+                let empty: Vec<String> = Vec::new();
+                let pattern = build_pattern_for_regex(pat, &empty);
+                let arc = self.pool.acquire_pcre2(&pattern)?;
+                Ok(CompiledNode::Leaf { pat: arc, negated: false, field: None, mods: vec![] })
             }
             Node::Not(inner) => {
                 let c = self.compile(inner)?;
@@ -47,26 +51,61 @@ impl QueryMatcher {
             }
             Node::And(a, b) => Ok(CompiledNode::And(Box::new(self.compile(a)?), Box::new(self.compile(b)?))),
             Node::Or(a, b) => Ok(CompiledNode::Or(Box::new(self.compile(a)?), Box::new(self.compile(b)?))),
-            Node::Group(inner) => Ok(CompiledNode::Or(Box::new(self.compile(inner)?), Box::new(self.compile(inner)?))),
+            Node::Group(inner) => Ok(self.compile(inner)?),
             Node::Field(name, term) => {
-                // For now, compile the inner term but record the field.
-                let inner = if term.len() >= 2 && term.starts_with('/') && term.ends_with('/') {
+                if term.len() >= 2 && term.starts_with('/') && term.ends_with('/') {
                     let pat = term[1..term.len()-1].to_string();
-                    let arc = self.pool.acquire_pcre2(&pat)?;
-                    CompiledNode::Leaf { pat: arc, negated: false, field: Some(name.clone()) }
+                    let empty: Vec<String> = Vec::new();
+                    let pattern = build_pattern_for_regex(&pat, &empty);
+                    let arc = self.pool.acquire_pcre2(&pattern)?;
+                    Ok(CompiledNode::Leaf { pat: arc, negated: false, field: Some(name.clone()), mods: vec![] })
                 } else {
-                    let esc = escape_literal(term);
-                    let arc = self.pool.acquire_pcre2(&esc)?;
-                    CompiledNode::Leaf { pat: arc, negated: false, field: Some(name.clone()) }
-                };
-                Ok(inner)
+                    let empty: Vec<String> = Vec::new();
+                    let pattern = build_pattern_for_literal(term, &empty);
+                    let arc = self.pool.acquire_pcre2(&pattern)?;
+                    Ok(CompiledNode::Leaf { pat: arc, negated: false, field: Some(name.clone()), mods: vec![] })
+                }
+            }
+            Node::Modified(inner, mods) => {
+                // Apply modifiers to the inner term when compiling.
+                match &**inner {
+                    Node::Word(s) => {
+                        let pattern = build_pattern_for_literal(s, mods);
+                        let arc = self.pool.acquire_pcre2(&pattern)?;
+                        Ok(CompiledNode::Leaf { pat: arc, negated: false, field: None, mods: mods.clone() })
+                    }
+                    Node::Regex(pat) => {
+                        let pattern = build_pattern_for_regex(pat, mods);
+                        let arc = self.pool.acquire_pcre2(&pattern)?;
+                        Ok(CompiledNode::Leaf { pat: arc, negated: false, field: None, mods: mods.clone() })
+                    }
+                    Node::Field(name, term) => {
+                        if term.len() >= 2 && term.starts_with('/') && term.ends_with('/') {
+                            let pat = term[1..term.len()-1].to_string();
+                            let pattern = build_pattern_for_regex(&pat, mods);
+                            let arc = self.pool.acquire_pcre2(&pattern)?;
+                            Ok(CompiledNode::Leaf { pat: arc, negated: false, field: Some(name.clone()), mods: mods.clone() })
+                        } else {
+                            let pattern = build_pattern_for_literal(term, mods);
+                            let arc = self.pool.acquire_pcre2(&pattern)?;
+                            Ok(CompiledNode::Leaf { pat: arc, negated: false, field: Some(name.clone()), mods: mods.clone() })
+                        }
+                    }
+                    other => {
+                        let s = format!("{:?}", other);
+                        let pattern = build_pattern_for_literal(&s, mods);
+                        let arc = self.pool.acquire_pcre2(&pattern)?;
+                        Ok(CompiledNode::Leaf { pat: arc, negated: false, field: None, mods: mods.clone() })
+                    }
+                }
             }
             other => {
                 // Fallback: try to stringify and match as literal
                 let s = format!("{:?}", other);
-                let esc = escape_literal(&s);
-                let arc = self.pool.acquire_pcre2(&esc)?;
-                Ok(CompiledNode::Leaf { pat: arc, negated: false, field: None })
+                let empty: Vec<String> = Vec::new();
+                let pattern = build_pattern_for_literal(&s, &empty);
+                let arc = self.pool.acquire_pcre2(&pattern)?;
+                Ok(CompiledNode::Leaf { pat: arc, negated: false, field: None, mods: vec![] })
             }
         }
     }
@@ -117,6 +156,33 @@ fn escape_literal(s: &str) -> String {
     }
     out.push(')');
     out
+}
+
+fn build_pattern_for_literal(s: &str, mods: &Vec<String>) -> String {
+    let mut pat = String::new();
+    // case-insensitive
+    if mods.iter().any(|m| m.eq_ignore_ascii_case("i") || m.eq_ignore_ascii_case("icase") || m.eq_ignore_ascii_case("ignorecase")) {
+        pat.push_str("(?i)");
+    }
+    let inner = escape_literal(s);
+    pat.push_str(&inner);
+    // anchored/exact
+    if mods.iter().any(|m| m.starts_with("anch") || m.eq_ignore_ascii_case("exact")) {
+        pat = format!("^{}$", pat);
+    }
+    pat
+}
+
+fn build_pattern_for_regex(s: &str, mods: &Vec<String>) -> String {
+    let mut pat = String::new();
+    if mods.iter().any(|m| m.eq_ignore_ascii_case("i") || m.eq_ignore_ascii_case("icase") || m.eq_ignore_ascii_case("ignorecase")) {
+        pat.push_str("(?i)");
+    }
+    pat.push_str(s);
+    if mods.iter().any(|m| m.starts_with("anch") || m.eq_ignore_ascii_case("exact")) {
+        pat = format!("^{}$", pat);
+    }
+    pat
 }
 
 #[cfg(test)]
