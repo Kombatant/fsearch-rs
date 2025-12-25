@@ -318,6 +318,71 @@ impl QueryMatcher {
         }
     }
 
+    /// Evaluate `compiled` against an `Entry` so compare/range nodes can
+    /// consult numeric fields like `size` and `mtime`. For leaf and logical
+    /// nodes this delegates to existing `is_match` behavior by building the
+    /// combined text `name + "\n" + path` from the provided entry.
+    pub fn is_match_entry(&self, compiled: &CompiledNode, entry: &crate::entry::Entry) -> bool {
+        match compiled {
+            CompiledNode::Compare { field, op, value } => {
+                // Map known numeric fields to entry values
+                if let Some(f) = field {
+                    let num_opt: Option<i128> = match f.as_str() {
+                        "size" => Some(entry.size as i128),
+                        "mtime" | "date_modified" | "modified" => Some(entry.mtime as i128),
+                        _ => None,
+                    };
+                    if let Some(lhs) = num_opt {
+                        if let Ok(rhs) = value.parse::<i128>() {
+                            return match op {
+                                crate::query::parser_rs::CompareOp::Eq => lhs == rhs,
+                                crate::query::parser_rs::CompareOp::Contains => lhs.to_string().contains(&rhs.to_string()),
+                                crate::query::parser_rs::CompareOp::Smaller => lhs < rhs,
+                                crate::query::parser_rs::CompareOp::SmallerEq => lhs <= rhs,
+                                crate::query::parser_rs::CompareOp::Greater => lhs > rhs,
+                                crate::query::parser_rs::CompareOp::GreaterEq => lhs >= rhs,
+                            };
+                        }
+                    }
+                }
+                // Fallback: try parsing combined text
+                let text = format!("{}\n{}", entry.name, entry.path);
+                self.is_match(compiled, text.as_bytes())
+            }
+            CompiledNode::Range { field, low, high } => {
+                if let Some(f) = field {
+                    let num_opt: Option<i128> = match f.as_str() {
+                        "size" => Some(entry.size as i128),
+                        "mtime" | "date_modified" | "modified" => Some(entry.mtime as i128),
+                        _ => None,
+                    };
+                    if let Some(v) = num_opt {
+                        let mut ok = true;
+                        use crate::query::parser_rs::Bound;
+                        match low {
+                            Bound::Inclusive(s) => if let Ok(lv) = s.parse::<i128>() { ok &= v >= lv; },
+                            Bound::Exclusive(s) => if let Ok(lv) = s.parse::<i128>() { ok &= v > lv; },
+                            Bound::Unbounded => {}
+                        }
+                        match high {
+                            Bound::Inclusive(s) => if let Ok(hv) = s.parse::<i128>() { ok &= v <= hv; },
+                            Bound::Exclusive(s) => if let Ok(hv) = s.parse::<i128>() { ok &= v < hv; },
+                            Bound::Unbounded => {}
+                        }
+                        return ok;
+                    }
+                }
+                // fallback via combined text
+                let text = format!("{}\n{}", entry.name, entry.path);
+                self.is_match(compiled, text.as_bytes())
+            }
+            CompiledNode::Leaf { .. } | CompiledNode::Function { .. } | CompiledNode::Not(_) | CompiledNode::And(_, _) | CompiledNode::Or(_, _) => {
+                let text = format!("{}\n{}", entry.name, entry.path);
+                self.is_match(compiled, text.as_bytes())
+            }
+        }
+    }
+
 }
 
 

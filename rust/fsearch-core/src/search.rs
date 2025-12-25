@@ -68,10 +68,9 @@ pub fn start_search_with_index(idx: Arc<Index>, query: &str) -> u64 {
             }
             // If we have a compiled query, use it for matching and metadata
             if let Some(compiled) = &compiled_opt {
-                let text = format!("{}\n{}", e.name, e.path);
-                let bytes = text.as_bytes();
-                if QueryMatcher::new(pool.clone()).is_match(compiled, bytes) {
-                    let metas = QueryMatcher::new(pool.clone()).captures_meta(compiled, bytes);
+                if QueryMatcher::new(pool.clone()).is_match_entry(compiled, e) {
+                    let text = format!("{}\n{}", e.name, e.path);
+                    let metas = QueryMatcher::new(pool.clone()).captures_meta(compiled, text.as_bytes());
                     // prefer compiled node field when metas don't specify one
                     let compiled_field = match compiled {
                         crate::query::matcher::CompiledNode::Leaf { field, .. } => field.clone(),
@@ -410,10 +409,9 @@ pub fn start_search_with_index_and_cb(idx: Arc<Index>, query: &str, cb: extern "
         for e in idx.entries.iter() {
             if cancel_clone.load(Ordering::SeqCst) { break; }
             if let Some(compiled) = &compiled_opt {
-                let text = format!("{}\n{}", e.name, e.path);
-                let bytes = text.as_bytes();
-                if QueryMatcher::new(pool.clone()).is_match(compiled, bytes) {
-                    let metas = QueryMatcher::new(pool.clone()).captures_meta(compiled, bytes);
+                if QueryMatcher::new(pool.clone()).is_match_entry(compiled, e) {
+                    let text = format!("{}\n{}", e.name, e.path);
+                    let metas = QueryMatcher::new(pool.clone()).captures_meta(compiled, text.as_bytes());
                     // prefer compiled node field when metas don't specify one
                     let compiled_field = match compiled {
                         crate::query::matcher::CompiledNode::Leaf { field, .. } => field.clone(),
