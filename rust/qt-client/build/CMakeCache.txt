@@ -22,7 +22,7 @@ CMAKE_AR:FILEPATH=/usr/bin/ar
 
 //Choose the type of build, options are: None Debug Release RelWithDebInfo
 // MinSizeRel ...
-CMAKE_BUILD_TYPE:STRING=
+CMAKE_BUILD_TYPE:STRING=Release
 
 //Enable/Disable color output during build.
 CMAKE_COLOR_MAKEFILE:BOOL=ON
@@ -244,10 +244,10 @@ CMAKE_TAPI:FILEPATH=CMAKE_TAPI-NOTFOUND
 CMAKE_VERBOSE_MAKEFILE:BOOL=FALSE
 
 //Path to fsearch-core include directory
-FSEARCH_CORE_INCLUDE_DIR:BOOL=OFF
+FSEARCH_CORE_INCLUDE_DIR:PATH=/home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/fsearch-core/include
 
 //Path to fsearch-core static library
-FSEARCH_CORE_LIB:BOOL=OFF
+FSEARCH_CORE_LIB:BOOL=/home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/target/release/libfsearch_core.a
 
 //Path to a file.
 OPENGL_EGL_INCLUDE_DIR:PATH=/usr/include

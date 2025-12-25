@@ -22,3 +22,7 @@ tempfile = "3"
 
 [dev-dependencies]
 criterion = "0.4"
+
+[[bin]]
+name = "bench_rust_matcher"
+path = "tools/bench_rust_matcher.rs"

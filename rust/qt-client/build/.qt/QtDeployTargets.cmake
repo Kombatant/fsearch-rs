@@ -1,2 +1,4 @@
 set(__QT_DEPLOY_TARGET_fsearch_qt_client_FILE /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build/fsearch_qt_client)
 set(__QT_DEPLOY_TARGET_fsearch_qt_client_TYPE EXECUTABLE)
+set(__QT_DEPLOY_TARGET_fsearch_qt_integration_test_FILE /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build/fsearch_qt_integration_test)
+set(__QT_DEPLOY_TARGET_fsearch_qt_integration_test_TYPE EXECUTABLE)

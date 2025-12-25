@@ -129,6 +129,19 @@ fsearch_qt_client/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/fsearch_qt_client.dir/build.make CMakeFiles/fsearch_qt_client.dir/build
 .PHONY : fsearch_qt_client/fast
 
+#=============================================================================
+# Target rules for targets named fsearch_qt_integration_test
+
+# Build rule for target.
+fsearch_qt_integration_test: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 fsearch_qt_integration_test
+.PHONY : fsearch_qt_integration_test
+
+# fast build rule for target.
+fsearch_qt_integration_test/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/fsearch_qt_integration_test.dir/build.make CMakeFiles/fsearch_qt_integration_test.dir/build
+.PHONY : fsearch_qt_integration_test/fast
+
 main.o: main.cpp.o
 .PHONY : main.o
 
@@ -153,6 +166,30 @@ main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/fsearch_qt_client.dir/build.make CMakeFiles/fsearch_qt_client.dir/main.cpp.s
 .PHONY : main.cpp.s
 
+tools/integration_test.o: tools/integration_test.cpp.o
+.PHONY : tools/integration_test.o
+
+# target to build an object file
+tools/integration_test.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/fsearch_qt_integration_test.dir/build.make CMakeFiles/fsearch_qt_integration_test.dir/tools/integration_test.cpp.o
+.PHONY : tools/integration_test.cpp.o
+
+tools/integration_test.i: tools/integration_test.cpp.i
+.PHONY : tools/integration_test.i
+
+# target to preprocess a source file
+tools/integration_test.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/fsearch_qt_integration_test.dir/build.make CMakeFiles/fsearch_qt_integration_test.dir/tools/integration_test.cpp.i
+.PHONY : tools/integration_test.cpp.i
+
+tools/integration_test.s: tools/integration_test.cpp.s
+.PHONY : tools/integration_test.s
+
+# target to generate assembly for a file
+tools/integration_test.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/fsearch_qt_integration_test.dir/build.make CMakeFiles/fsearch_qt_integration_test.dir/tools/integration_test.cpp.s
+.PHONY : tools/integration_test.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -162,9 +199,13 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... fsearch_qt_client"
+	@echo "... fsearch_qt_integration_test"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... tools/integration_test.o"
+	@echo "... tools/integration_test.i"
+	@echo "... tools/integration_test.s"
 .PHONY : help
 
 
