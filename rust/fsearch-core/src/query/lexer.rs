@@ -80,15 +80,25 @@ impl Lexer {
                         '=' => return (Token::Equal, None),
                         ':' => return (Token::Contains, None),
                         '<' => {
-                            if let Some('=') = self.get_next_char() {
-                                return (Token::SmallerEq, None);
+                            if let Some(nc) = self.get_next_char() {
+                                if nc == '=' {
+                                    return (Token::SmallerEq, None);
+                                } else {
+                                    self.give_back_char(nc);
+                                    return (Token::Smaller, None);
+                                }
                             } else {
                                 return (Token::Smaller, None);
                             }
                         }
                         '>' => {
-                            if let Some('=') = self.get_next_char() {
-                                return (Token::GreaterEq, None);
+                            if let Some(nc) = self.get_next_char() {
+                                if nc == '=' {
+                                    return (Token::GreaterEq, None);
+                                } else {
+                                    self.give_back_char(nc);
+                                    return (Token::Greater, None);
+                                }
                             } else {
                                 return (Token::Greater, None);
                             }

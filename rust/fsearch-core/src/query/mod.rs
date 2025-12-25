@@ -1,5 +1,5 @@
 pub mod lexer;
-pub mod parser;
+pub mod parser_rs;
 
 pub use lexer::Token;
-pub use parser::{Node, Parser};
+pub use parser_rs::{Node, Parser};
