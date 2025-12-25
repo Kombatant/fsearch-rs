@@ -7,7 +7,7 @@
 extern "C" {
 #endif
 
-typedef void (*fsearch_result_cb_t)(uint64_t id, const char *name, const char *path, uint64_t size, uint64_t mtime, void *userdata);
+typedef void (*fsearch_result_cb_t)(uint64_t id, const char *name, const char *path, uint64_t size, uint64_t mtime, const char *highlights, void *userdata);
 
 bool fsearch_init(void);
 

@@ -247,7 +247,7 @@ CMAKE_VERBOSE_MAKEFILE:BOOL=FALSE
 FSEARCH_CORE_INCLUDE_DIR:BOOL=OFF
 
 //Path to fsearch-core static library
-FSEARCH_CORE_LIB:BOOL=/home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/target/release/libfsearch_core.a
+FSEARCH_CORE_LIB:BOOL=/tmp/fsearch_target/release/libfsearch_core.a
 
 //Path to a file.
 OPENGL_EGL_INCLUDE_DIR:PATH=/usr/include
@@ -287,6 +287,9 @@ OPENGL_opengl_LIBRARY:FILEPATH=/usr/lib/libOpenGL.so
 
 //Path to a file.
 OPENGL_xmesa_INCLUDE_DIR:PATH=OPENGL_xmesa_INCLUDE_DIR-NOTFOUND
+
+//Path to a library.
+PCRE2_LIB:FILEPATH=/usr/lib/libpcre2-8.so
 
 //Additional directories where find(Qt6 ...) host Qt components
 // are searched

@@ -13,9 +13,20 @@
 
 #include "../fsearch-core/include/fsearch_ffi.h"
 
-static void result_cb(uint64_t id, const char *name, const char *path, uint64_t size, uint64_t mtime, void *userdata) {
+extern "C" void result_cb(uint64_t id, const char *name, const char *path, uint64_t size, uint64_t mtime, const char *highlights, void *userdata) {
+    fprintf(stderr, "result_cb: userdata=%p name=%p path=%p highlights=%p\n", userdata, name, path, highlights);
+    fflush(stderr);
     QListWidget *list = static_cast<QListWidget *>(userdata);
+    if (!list) {
+        fprintf(stderr, "result_cb: list is null\n"); fflush(stderr);
+        return;
+    }
     QString text = QString("%1 — %2").arg(QString::fromUtf8(name)).arg(QString::fromUtf8(path));
+    if (highlights && highlights[0] != '\0') {
+        // display highlights JSON in a secondary line for now
+        QString h = QString::fromUtf8(highlights);
+        text += "\n" + h;
+    }
     list->addItem(text);
 }
 
@@ -65,6 +76,8 @@ int main(int argc, char **argv) {
             resultsList->addItem("Index build failed");
         } else {
             resultsList->addItem("Index built — listing entries:");
+            fprintf(stderr, "calling fsearch_index_list_entries_c with idx=%p resultsList=%p\n", idx, resultsList);
+            fflush(stderr);
             fsearch_index_list_entries_c(idx, result_cb, resultsList);
             // keep idx allocated; in real app, manage lifetime
         }

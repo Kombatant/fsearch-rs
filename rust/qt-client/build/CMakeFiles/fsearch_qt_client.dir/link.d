@@ -4,7 +4,8 @@ fsearch_qt_client: \
   /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/crtbeginS.o \
   CMakeFiles/fsearch_qt_client.dir/main.cpp.o \
   /usr/lib/libQt6Widgets.so.6.10.1 \
-  /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/target/release/libfsearch_core.a \
+  /tmp/fsearch_target/release/libfsearch_core.a \
+  /usr/lib/libpcre2-8.so \
   /usr/lib/libQt6Gui.so.6.10.1 \
   /usr/lib/libGLX.so \
   /usr/lib/libOpenGL.so \
@@ -59,8 +60,6 @@ fsearch_qt_client: \
   /usr/lib/libexpat.so.1 \
   /usr/lib32/libxcb.so.1 \
   /usr/lib/libxcb.so.1 \
-  /usr/lib32/libpcre2-8.so.0 \
-  /usr/lib/libpcre2-8.so.0 \
   /usr/lib/libdbus-1.so.3 \
   /usr/lib/libgraphite2.so.3 \
   /usr/lib32/libbz2.so.1.0 \
@@ -90,7 +89,9 @@ CMakeFiles/fsearch_qt_client.dir/main.cpp.o:
 
 /usr/lib/libQt6Widgets.so.6.10.1:
 
-/home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/target/release/libfsearch_core.a:
+/tmp/fsearch_target/release/libfsearch_core.a:
+
+/usr/lib/libpcre2-8.so:
 
 /usr/lib/libQt6Gui.so.6.10.1:
 
@@ -199,10 +200,6 @@ CMakeFiles/fsearch_qt_client.dir/main.cpp.o:
 /usr/lib32/libxcb.so.1:
 
 /usr/lib/libxcb.so.1:
-
-/usr/lib32/libpcre2-8.so.0:
-
-/usr/lib/libpcre2-8.so.0:
 
 /usr/lib/libdbus-1.so.3:
 

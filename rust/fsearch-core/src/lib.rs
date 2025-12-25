@@ -140,6 +140,10 @@ pub extern "C" fn fsearch_index_list_entries_c(ptr: *mut Index, cb: Option<Fsear
         return;
     }
     let cb = cb.unwrap();
+    // Debug: print userdata pointer received from caller
+    eprintln!("rust: fsearch_index_list_entries_c received userdata={:p}", userdata);
+    use std::io::Write;
+    let _ = std::io::stderr().flush();
     let idx = unsafe { &*ptr };
     let list = index_list_entries(idx);
     for r in list {
@@ -166,6 +170,10 @@ pub extern "C" fn fsearch_poll_results_c(handle: u64, cb: Option<FsearchResultCb
         return;
     }
     let cb = cb.unwrap();
+    // Debug: print userdata pointer received from caller
+    eprintln!("rust: fsearch_poll_results_c received userdata={:p}", userdata);
+    use std::io::Write;
+    let _ = std::io::stderr().flush();
     let list = poll_results(handle);
     for r in list {
         let name_c = std::ffi::CString::new(r.name).unwrap_or_default();
