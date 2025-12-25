@@ -337,6 +337,20 @@ impl QueryMatcher {
     pub fn captures_meta(&self, compiled: &CompiledNode, text: &[u8]) -> Vec<MatchMeta> {
         match compiled {
             CompiledNode::Leaf { pat: _, negated: _, field, .. } => {
+                // Special-case `extension` field: produce a name-field ranges
+                // entry (so GUI can bold the extension within the name) and
+                // an additional `extension` field entry with empty ranges to
+                // indicate extension-column highlighting (parity with C).
+                if let Some(f) = field {
+                    if f.eq("extension") {
+                        let mut ranges = self.captures(compiled, text);
+                        ranges = normalize_ranges(ranges);
+                        if ranges.is_empty() { return vec![]; }
+                        let name_meta = MatchMeta { field: Some("name".to_string()), ranges: ranges.clone() };
+                        let ext_meta = MatchMeta { field: Some("extension".to_string()), ranges: vec![] };
+                        return vec![name_meta, ext_meta];
+                    }
+                }
                 let mut ranges = self.captures(compiled, text);
                 ranges = normalize_ranges(ranges);
                 if ranges.is_empty() { return vec![]; }
@@ -491,6 +505,18 @@ mod tests {
             let (s,e) = metas[0].ranges[0];
             assert_eq!(&b"this is foo"[s..e], b"foo");
         }
+
+        // extension field should produce name+extension meta entries
+        let pool3 = PatternPool::new();
+        let pat2 = pool3.acquire_pcre2("txt").unwrap();
+        let comp_ext = CompiledNode::Leaf { pat: pat2, negated: false, field: Some("extension".to_string()), mods: vec![] };
+        let metas_ext = qm.captures_meta(&comp_ext, b"file.txt\n/some/path/file.txt");
+        // expect two metas: name with ranges, extension with empty ranges
+        assert_eq!(metas_ext.len(), 2);
+        assert_eq!(metas_ext[0].field, Some("name".to_string()));
+        assert!(!metas_ext[0].ranges.is_empty());
+        assert_eq!(metas_ext[1].field, Some("extension".to_string()));
+        assert!(metas_ext[1].ranges.is_empty());
 
         // compare matches produce a field entry with no ranges
         let node2 = Node::Compare("size".to_string(), crate::query::parser_rs::CompareOp::Eq, "100".to_string());
