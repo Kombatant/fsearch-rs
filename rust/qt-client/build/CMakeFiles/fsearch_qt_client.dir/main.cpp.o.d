@@ -1,5 +1,5 @@
 CMakeFiles/fsearch_qt_client.dir/main.cpp.o: \
- /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/main.cpp \
+ /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/main.cpp \
  /usr/include/stdc-predef.h /usr/include/qt6/QtWidgets/QApplication \
  /usr/include/qt6/QtWidgets/qapplication.h \
  /usr/include/qt6/QtWidgets/qtwidgetsglobal.h \
@@ -423,6 +423,7 @@ CMakeFiles/fsearch_qt_client.dir/main.cpp.o: \
  /usr/include/c++/15.2.1/bits/fs_dir.h \
  /usr/include/c++/15.2.1/bits/fs_ops.h \
  /usr/include/qt6/QtCore/qfileinfo.h /usr/include/qt6/QtCore/qtimezone.h \
+ /usr/include/qt6/QtCore/QSettings /usr/include/qt6/QtCore/qsettings.h \
  /usr/include/qt6/QtCore/QJsonDocument \
  /usr/include/qt6/QtCore/qjsondocument.h \
  /usr/include/qt6/QtCore/qjsonparseerror.h \
@@ -434,5 +435,13 @@ CMakeFiles/fsearch_qt_client.dir/main.cpp.o: \
  /usr/include/qt6/QtCore/qjsondocument.h \
  /usr/include/qt6/QtCore/QJsonArray /usr/include/qt6/QtCore/qjsonarray.h \
  /usr/include/qt6/QtCore/QJsonValue /usr/include/qt6/QtCore/qjsonvalue.h \
+ /usr/include/qt6/QtCore/QPointer /usr/include/qt6/QtCore/qpointer.h \
  /usr/include/c++/15.2.1/iostream \
- /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/../fsearch-core/include/fsearch_ffi.h
+ /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/../fsearch-core/include/fsearch_ffi.h \
+ /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/preferences.h \
+ /usr/include/qt6/QtWidgets/QDialog /usr/include/qt6/QtWidgets/qdialog.h \
+ /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/filter_editor.h \
+ /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/build/fsearch_qt_client_autogen/include/main.moc \
+ /usr/include/qt6/QtCore/qtmochelpers.h \
+ /usr/include/qt6/QtCore/qtmocconstants.h \
+ /usr/include/qt6/QtCore/q20algorithm.h

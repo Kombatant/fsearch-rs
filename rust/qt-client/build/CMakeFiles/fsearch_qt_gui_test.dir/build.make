@@ -53,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client
+CMAKE_SOURCE_DIR = /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build
+CMAKE_BINARY_DIR = /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/fsearch_qt_gui_test.dir/depend.make
@@ -71,9 +71,9 @@ include CMakeFiles/fsearch_qt_gui_test.dir/flags.make
 
 fsearch_qt_gui_test_autogen/timestamp: /usr/lib/qt6/moc
 fsearch_qt_gui_test_autogen/timestamp: CMakeFiles/fsearch_qt_gui_test.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Automatic MOC for target fsearch_qt_gui_test"
-	/usr/bin/cmake -E cmake_autogen /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build/CMakeFiles/fsearch_qt_gui_test_autogen.dir/AutogenInfo.json RelWithDebInfo
-	/usr/bin/cmake -E touch /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build/fsearch_qt_gui_test_autogen/timestamp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Automatic MOC for target fsearch_qt_gui_test"
+	/usr/bin/cmake -E cmake_autogen /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/build/CMakeFiles/fsearch_qt_gui_test_autogen.dir/AutogenInfo.json Release
+	/usr/bin/cmake -E touch /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/build/fsearch_qt_gui_test_autogen/timestamp
 
 CMakeFiles/fsearch_qt_gui_test.dir/codegen:
 .PHONY : CMakeFiles/fsearch_qt_gui_test.dir/codegen
@@ -81,30 +81,30 @@ CMakeFiles/fsearch_qt_gui_test.dir/codegen:
 CMakeFiles/fsearch_qt_gui_test.dir/fsearch_qt_gui_test_autogen/mocs_compilation.cpp.o: CMakeFiles/fsearch_qt_gui_test.dir/flags.make
 CMakeFiles/fsearch_qt_gui_test.dir/fsearch_qt_gui_test_autogen/mocs_compilation.cpp.o: fsearch_qt_gui_test_autogen/mocs_compilation.cpp
 CMakeFiles/fsearch_qt_gui_test.dir/fsearch_qt_gui_test_autogen/mocs_compilation.cpp.o: CMakeFiles/fsearch_qt_gui_test.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/fsearch_qt_gui_test.dir/fsearch_qt_gui_test_autogen/mocs_compilation.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/fsearch_qt_gui_test.dir/fsearch_qt_gui_test_autogen/mocs_compilation.cpp.o -MF CMakeFiles/fsearch_qt_gui_test.dir/fsearch_qt_gui_test_autogen/mocs_compilation.cpp.o.d -o CMakeFiles/fsearch_qt_gui_test.dir/fsearch_qt_gui_test_autogen/mocs_compilation.cpp.o -c /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build/fsearch_qt_gui_test_autogen/mocs_compilation.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/fsearch_qt_gui_test.dir/fsearch_qt_gui_test_autogen/mocs_compilation.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/fsearch_qt_gui_test.dir/fsearch_qt_gui_test_autogen/mocs_compilation.cpp.o -MF CMakeFiles/fsearch_qt_gui_test.dir/fsearch_qt_gui_test_autogen/mocs_compilation.cpp.o.d -o CMakeFiles/fsearch_qt_gui_test.dir/fsearch_qt_gui_test_autogen/mocs_compilation.cpp.o -c /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/build/fsearch_qt_gui_test_autogen/mocs_compilation.cpp
 
 CMakeFiles/fsearch_qt_gui_test.dir/fsearch_qt_gui_test_autogen/mocs_compilation.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/fsearch_qt_gui_test.dir/fsearch_qt_gui_test_autogen/mocs_compilation.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build/fsearch_qt_gui_test_autogen/mocs_compilation.cpp > CMakeFiles/fsearch_qt_gui_test.dir/fsearch_qt_gui_test_autogen/mocs_compilation.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/build/fsearch_qt_gui_test_autogen/mocs_compilation.cpp > CMakeFiles/fsearch_qt_gui_test.dir/fsearch_qt_gui_test_autogen/mocs_compilation.cpp.i
 
 CMakeFiles/fsearch_qt_gui_test.dir/fsearch_qt_gui_test_autogen/mocs_compilation.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/fsearch_qt_gui_test.dir/fsearch_qt_gui_test_autogen/mocs_compilation.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build/fsearch_qt_gui_test_autogen/mocs_compilation.cpp -o CMakeFiles/fsearch_qt_gui_test.dir/fsearch_qt_gui_test_autogen/mocs_compilation.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/build/fsearch_qt_gui_test_autogen/mocs_compilation.cpp -o CMakeFiles/fsearch_qt_gui_test.dir/fsearch_qt_gui_test_autogen/mocs_compilation.cpp.s
 
 CMakeFiles/fsearch_qt_gui_test.dir/tests/gui_test.cpp.o: CMakeFiles/fsearch_qt_gui_test.dir/flags.make
-CMakeFiles/fsearch_qt_gui_test.dir/tests/gui_test.cpp.o: /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/tests/gui_test.cpp
+CMakeFiles/fsearch_qt_gui_test.dir/tests/gui_test.cpp.o: /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/tests/gui_test.cpp
 CMakeFiles/fsearch_qt_gui_test.dir/tests/gui_test.cpp.o: CMakeFiles/fsearch_qt_gui_test.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/fsearch_qt_gui_test.dir/tests/gui_test.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/fsearch_qt_gui_test.dir/tests/gui_test.cpp.o -MF CMakeFiles/fsearch_qt_gui_test.dir/tests/gui_test.cpp.o.d -o CMakeFiles/fsearch_qt_gui_test.dir/tests/gui_test.cpp.o -c /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/tests/gui_test.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/fsearch_qt_gui_test.dir/tests/gui_test.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/fsearch_qt_gui_test.dir/tests/gui_test.cpp.o -MF CMakeFiles/fsearch_qt_gui_test.dir/tests/gui_test.cpp.o.d -o CMakeFiles/fsearch_qt_gui_test.dir/tests/gui_test.cpp.o -c /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/tests/gui_test.cpp
 
 CMakeFiles/fsearch_qt_gui_test.dir/tests/gui_test.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/fsearch_qt_gui_test.dir/tests/gui_test.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/tests/gui_test.cpp > CMakeFiles/fsearch_qt_gui_test.dir/tests/gui_test.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/tests/gui_test.cpp > CMakeFiles/fsearch_qt_gui_test.dir/tests/gui_test.cpp.i
 
 CMakeFiles/fsearch_qt_gui_test.dir/tests/gui_test.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/fsearch_qt_gui_test.dir/tests/gui_test.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/tests/gui_test.cpp -o CMakeFiles/fsearch_qt_gui_test.dir/tests/gui_test.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/tests/gui_test.cpp -o CMakeFiles/fsearch_qt_gui_test.dir/tests/gui_test.cpp.s
 
 # Object files for target fsearch_qt_gui_test
 fsearch_qt_gui_test_OBJECTS = \
@@ -120,14 +120,14 @@ fsearch_qt_gui_test: CMakeFiles/fsearch_qt_gui_test.dir/build.make
 fsearch_qt_gui_test: CMakeFiles/fsearch_qt_gui_test.dir/compiler_depend.ts
 fsearch_qt_gui_test: /usr/lib/libQt6Test.so.6.10.1
 fsearch_qt_gui_test: /usr/lib/libQt6Widgets.so.6.10.1
-fsearch_qt_gui_test: ../target/release/libfsearch_core.a
+fsearch_qt_gui_test: /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/../target/release/libfsearch_core.a
 fsearch_qt_gui_test: /usr/lib/libpcre2-8.so
 fsearch_qt_gui_test: /usr/lib/libQt6Gui.so.6.10.1
 fsearch_qt_gui_test: /usr/lib/libGLX.so
 fsearch_qt_gui_test: /usr/lib/libOpenGL.so
 fsearch_qt_gui_test: /usr/lib/libQt6Core.so.6.10.1
 fsearch_qt_gui_test: CMakeFiles/fsearch_qt_gui_test.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable fsearch_qt_gui_test"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable fsearch_qt_gui_test"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/fsearch_qt_gui_test.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -139,6 +139,6 @@ CMakeFiles/fsearch_qt_gui_test.dir/clean:
 .PHONY : CMakeFiles/fsearch_qt_gui_test.dir/clean
 
 CMakeFiles/fsearch_qt_gui_test.dir/depend: fsearch_qt_gui_test_autogen/timestamp
-	cd /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build/CMakeFiles/fsearch_qt_gui_test.dir/DependInfo.cmake "--color=$(COLOR)" fsearch_qt_gui_test
+	cd /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/build /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/build /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/build/CMakeFiles/fsearch_qt_gui_test.dir/DependInfo.cmake "--color=$(COLOR)" fsearch_qt_gui_test
 .PHONY : CMakeFiles/fsearch_qt_gui_test.dir/depend
 

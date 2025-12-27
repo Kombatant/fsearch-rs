@@ -1,0 +1,10 @@
+/home/kombatant/Dev/languages/fsearch-rs/rust/target/debug/deps/linux_raw_sys-a80e220f3207ea4e.d: /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/linux-raw-sys-0.11.0/src/lib.rs /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/linux-raw-sys-0.11.0/src/elf.rs /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/linux-raw-sys-0.11.0/src/x86_64/auxvec.rs /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/linux-raw-sys-0.11.0/src/x86_64/errno.rs /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/linux-raw-sys-0.11.0/src/x86_64/general.rs /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/linux-raw-sys-0.11.0/src/x86_64/ioctl.rs
+
+/home/kombatant/Dev/languages/fsearch-rs/rust/target/debug/deps/liblinux_raw_sys-a80e220f3207ea4e.rmeta: /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/linux-raw-sys-0.11.0/src/lib.rs /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/linux-raw-sys-0.11.0/src/elf.rs /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/linux-raw-sys-0.11.0/src/x86_64/auxvec.rs /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/linux-raw-sys-0.11.0/src/x86_64/errno.rs /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/linux-raw-sys-0.11.0/src/x86_64/general.rs /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/linux-raw-sys-0.11.0/src/x86_64/ioctl.rs
+
+/home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/linux-raw-sys-0.11.0/src/lib.rs:
+/home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/linux-raw-sys-0.11.0/src/elf.rs:
+/home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/linux-raw-sys-0.11.0/src/x86_64/auxvec.rs:
+/home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/linux-raw-sys-0.11.0/src/x86_64/errno.rs:
+/home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/linux-raw-sys-0.11.0/src/x86_64/general.rs:
+/home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/linux-raw-sys-0.11.0/src/x86_64/ioctl.rs:

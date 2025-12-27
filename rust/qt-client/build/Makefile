@@ -57,10 +57,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client
+CMAKE_SOURCE_DIR = /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build
+CMAKE_BINARY_DIR = /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -87,9 +87,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build/CMakeFiles /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/build/CMakeFiles /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/build//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -233,6 +233,30 @@ fsearch_qt_gui_test_autogen/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/fsearch_qt_gui_test_autogen.dir/build.make CMakeFiles/fsearch_qt_gui_test_autogen.dir/build
 .PHONY : fsearch_qt_gui_test_autogen/fast
 
+filter_editor.o: filter_editor.cpp.o
+.PHONY : filter_editor.o
+
+# target to build an object file
+filter_editor.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/fsearch_qt_client.dir/build.make CMakeFiles/fsearch_qt_client.dir/filter_editor.cpp.o
+.PHONY : filter_editor.cpp.o
+
+filter_editor.i: filter_editor.cpp.i
+.PHONY : filter_editor.i
+
+# target to preprocess a source file
+filter_editor.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/fsearch_qt_client.dir/build.make CMakeFiles/fsearch_qt_client.dir/filter_editor.cpp.i
+.PHONY : filter_editor.cpp.i
+
+filter_editor.s: filter_editor.cpp.s
+.PHONY : filter_editor.s
+
+# target to generate assembly for a file
+filter_editor.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/fsearch_qt_client.dir/build.make CMakeFiles/fsearch_qt_client.dir/filter_editor.cpp.s
+.PHONY : filter_editor.cpp.s
+
 fsearch_qt_client_autogen/mocs_compilation.o: fsearch_qt_client_autogen/mocs_compilation.cpp.o
 .PHONY : fsearch_qt_client_autogen/mocs_compilation.o
 
@@ -329,6 +353,30 @@ main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/fsearch_qt_client.dir/build.make CMakeFiles/fsearch_qt_client.dir/main.cpp.s
 .PHONY : main.cpp.s
 
+preferences.o: preferences.cpp.o
+.PHONY : preferences.o
+
+# target to build an object file
+preferences.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/fsearch_qt_client.dir/build.make CMakeFiles/fsearch_qt_client.dir/preferences.cpp.o
+.PHONY : preferences.cpp.o
+
+preferences.i: preferences.cpp.i
+.PHONY : preferences.i
+
+# target to preprocess a source file
+preferences.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/fsearch_qt_client.dir/build.make CMakeFiles/fsearch_qt_client.dir/preferences.cpp.i
+.PHONY : preferences.cpp.i
+
+preferences.s: preferences.cpp.s
+.PHONY : preferences.s
+
+# target to generate assembly for a file
+preferences.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/fsearch_qt_client.dir/build.make CMakeFiles/fsearch_qt_client.dir/preferences.cpp.s
+.PHONY : preferences.cpp.s
+
 tests/gui_test.o: tests/gui_test.cpp.o
 .PHONY : tests/gui_test.o
 
@@ -394,6 +442,9 @@ help:
 	@echo "... fsearch_qt_client"
 	@echo "... fsearch_qt_gui_test"
 	@echo "... fsearch_qt_integration_test"
+	@echo "... filter_editor.o"
+	@echo "... filter_editor.i"
+	@echo "... filter_editor.s"
 	@echo "... fsearch_qt_client_autogen/mocs_compilation.o"
 	@echo "... fsearch_qt_client_autogen/mocs_compilation.i"
 	@echo "... fsearch_qt_client_autogen/mocs_compilation.s"
@@ -406,6 +457,9 @@ help:
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... preferences.o"
+	@echo "... preferences.i"
+	@echo "... preferences.s"
 	@echo "... tests/gui_test.o"
 	@echo "... tests/gui_test.i"
 	@echo "... tests/gui_test.s"

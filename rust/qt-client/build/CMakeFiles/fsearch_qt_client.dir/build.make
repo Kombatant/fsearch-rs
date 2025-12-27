@@ -53,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client
+CMAKE_SOURCE_DIR = /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build
+CMAKE_BINARY_DIR = /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/fsearch_qt_client.dir/depend.make
@@ -71,9 +71,9 @@ include CMakeFiles/fsearch_qt_client.dir/flags.make
 
 fsearch_qt_client_autogen/timestamp: /usr/lib/qt6/moc
 fsearch_qt_client_autogen/timestamp: CMakeFiles/fsearch_qt_client.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Automatic MOC for target fsearch_qt_client"
-	/usr/bin/cmake -E cmake_autogen /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build/CMakeFiles/fsearch_qt_client_autogen.dir/AutogenInfo.json RelWithDebInfo
-	/usr/bin/cmake -E touch /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build/fsearch_qt_client_autogen/timestamp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Automatic MOC for target fsearch_qt_client"
+	/usr/bin/cmake -E cmake_autogen /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/build/CMakeFiles/fsearch_qt_client_autogen.dir/AutogenInfo.json Release
+	/usr/bin/cmake -E touch /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/build/fsearch_qt_client_autogen/timestamp
 
 CMakeFiles/fsearch_qt_client.dir/codegen:
 .PHONY : CMakeFiles/fsearch_qt_client.dir/codegen
@@ -81,52 +81,84 @@ CMakeFiles/fsearch_qt_client.dir/codegen:
 CMakeFiles/fsearch_qt_client.dir/fsearch_qt_client_autogen/mocs_compilation.cpp.o: CMakeFiles/fsearch_qt_client.dir/flags.make
 CMakeFiles/fsearch_qt_client.dir/fsearch_qt_client_autogen/mocs_compilation.cpp.o: fsearch_qt_client_autogen/mocs_compilation.cpp
 CMakeFiles/fsearch_qt_client.dir/fsearch_qt_client_autogen/mocs_compilation.cpp.o: CMakeFiles/fsearch_qt_client.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/fsearch_qt_client.dir/fsearch_qt_client_autogen/mocs_compilation.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/fsearch_qt_client.dir/fsearch_qt_client_autogen/mocs_compilation.cpp.o -MF CMakeFiles/fsearch_qt_client.dir/fsearch_qt_client_autogen/mocs_compilation.cpp.o.d -o CMakeFiles/fsearch_qt_client.dir/fsearch_qt_client_autogen/mocs_compilation.cpp.o -c /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build/fsearch_qt_client_autogen/mocs_compilation.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/fsearch_qt_client.dir/fsearch_qt_client_autogen/mocs_compilation.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/fsearch_qt_client.dir/fsearch_qt_client_autogen/mocs_compilation.cpp.o -MF CMakeFiles/fsearch_qt_client.dir/fsearch_qt_client_autogen/mocs_compilation.cpp.o.d -o CMakeFiles/fsearch_qt_client.dir/fsearch_qt_client_autogen/mocs_compilation.cpp.o -c /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/build/fsearch_qt_client_autogen/mocs_compilation.cpp
 
 CMakeFiles/fsearch_qt_client.dir/fsearch_qt_client_autogen/mocs_compilation.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/fsearch_qt_client.dir/fsearch_qt_client_autogen/mocs_compilation.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build/fsearch_qt_client_autogen/mocs_compilation.cpp > CMakeFiles/fsearch_qt_client.dir/fsearch_qt_client_autogen/mocs_compilation.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/build/fsearch_qt_client_autogen/mocs_compilation.cpp > CMakeFiles/fsearch_qt_client.dir/fsearch_qt_client_autogen/mocs_compilation.cpp.i
 
 CMakeFiles/fsearch_qt_client.dir/fsearch_qt_client_autogen/mocs_compilation.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/fsearch_qt_client.dir/fsearch_qt_client_autogen/mocs_compilation.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build/fsearch_qt_client_autogen/mocs_compilation.cpp -o CMakeFiles/fsearch_qt_client.dir/fsearch_qt_client_autogen/mocs_compilation.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/build/fsearch_qt_client_autogen/mocs_compilation.cpp -o CMakeFiles/fsearch_qt_client.dir/fsearch_qt_client_autogen/mocs_compilation.cpp.s
 
 CMakeFiles/fsearch_qt_client.dir/main.cpp.o: CMakeFiles/fsearch_qt_client.dir/flags.make
-CMakeFiles/fsearch_qt_client.dir/main.cpp.o: /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/main.cpp
+CMakeFiles/fsearch_qt_client.dir/main.cpp.o: /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/main.cpp
 CMakeFiles/fsearch_qt_client.dir/main.cpp.o: CMakeFiles/fsearch_qt_client.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/fsearch_qt_client.dir/main.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/fsearch_qt_client.dir/main.cpp.o -MF CMakeFiles/fsearch_qt_client.dir/main.cpp.o.d -o CMakeFiles/fsearch_qt_client.dir/main.cpp.o -c /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/fsearch_qt_client.dir/main.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/fsearch_qt_client.dir/main.cpp.o -MF CMakeFiles/fsearch_qt_client.dir/main.cpp.o.d -o CMakeFiles/fsearch_qt_client.dir/main.cpp.o -c /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/main.cpp
 
 CMakeFiles/fsearch_qt_client.dir/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/fsearch_qt_client.dir/main.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/main.cpp > CMakeFiles/fsearch_qt_client.dir/main.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/main.cpp > CMakeFiles/fsearch_qt_client.dir/main.cpp.i
 
 CMakeFiles/fsearch_qt_client.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/fsearch_qt_client.dir/main.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/main.cpp -o CMakeFiles/fsearch_qt_client.dir/main.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/main.cpp -o CMakeFiles/fsearch_qt_client.dir/main.cpp.s
+
+CMakeFiles/fsearch_qt_client.dir/preferences.cpp.o: CMakeFiles/fsearch_qt_client.dir/flags.make
+CMakeFiles/fsearch_qt_client.dir/preferences.cpp.o: /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/preferences.cpp
+CMakeFiles/fsearch_qt_client.dir/preferences.cpp.o: CMakeFiles/fsearch_qt_client.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/fsearch_qt_client.dir/preferences.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/fsearch_qt_client.dir/preferences.cpp.o -MF CMakeFiles/fsearch_qt_client.dir/preferences.cpp.o.d -o CMakeFiles/fsearch_qt_client.dir/preferences.cpp.o -c /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/preferences.cpp
+
+CMakeFiles/fsearch_qt_client.dir/preferences.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/fsearch_qt_client.dir/preferences.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/preferences.cpp > CMakeFiles/fsearch_qt_client.dir/preferences.cpp.i
+
+CMakeFiles/fsearch_qt_client.dir/preferences.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/fsearch_qt_client.dir/preferences.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/preferences.cpp -o CMakeFiles/fsearch_qt_client.dir/preferences.cpp.s
+
+CMakeFiles/fsearch_qt_client.dir/filter_editor.cpp.o: CMakeFiles/fsearch_qt_client.dir/flags.make
+CMakeFiles/fsearch_qt_client.dir/filter_editor.cpp.o: /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/filter_editor.cpp
+CMakeFiles/fsearch_qt_client.dir/filter_editor.cpp.o: CMakeFiles/fsearch_qt_client.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/fsearch_qt_client.dir/filter_editor.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/fsearch_qt_client.dir/filter_editor.cpp.o -MF CMakeFiles/fsearch_qt_client.dir/filter_editor.cpp.o.d -o CMakeFiles/fsearch_qt_client.dir/filter_editor.cpp.o -c /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/filter_editor.cpp
+
+CMakeFiles/fsearch_qt_client.dir/filter_editor.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/fsearch_qt_client.dir/filter_editor.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/filter_editor.cpp > CMakeFiles/fsearch_qt_client.dir/filter_editor.cpp.i
+
+CMakeFiles/fsearch_qt_client.dir/filter_editor.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/fsearch_qt_client.dir/filter_editor.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/filter_editor.cpp -o CMakeFiles/fsearch_qt_client.dir/filter_editor.cpp.s
 
 # Object files for target fsearch_qt_client
 fsearch_qt_client_OBJECTS = \
 "CMakeFiles/fsearch_qt_client.dir/fsearch_qt_client_autogen/mocs_compilation.cpp.o" \
-"CMakeFiles/fsearch_qt_client.dir/main.cpp.o"
+"CMakeFiles/fsearch_qt_client.dir/main.cpp.o" \
+"CMakeFiles/fsearch_qt_client.dir/preferences.cpp.o" \
+"CMakeFiles/fsearch_qt_client.dir/filter_editor.cpp.o"
 
 # External object files for target fsearch_qt_client
 fsearch_qt_client_EXTERNAL_OBJECTS =
 
 fsearch_qt_client: CMakeFiles/fsearch_qt_client.dir/fsearch_qt_client_autogen/mocs_compilation.cpp.o
 fsearch_qt_client: CMakeFiles/fsearch_qt_client.dir/main.cpp.o
+fsearch_qt_client: CMakeFiles/fsearch_qt_client.dir/preferences.cpp.o
+fsearch_qt_client: CMakeFiles/fsearch_qt_client.dir/filter_editor.cpp.o
 fsearch_qt_client: CMakeFiles/fsearch_qt_client.dir/build.make
 fsearch_qt_client: CMakeFiles/fsearch_qt_client.dir/compiler_depend.ts
 fsearch_qt_client: /usr/lib/libQt6Widgets.so.6.10.1
-fsearch_qt_client: ../target/release/libfsearch_core.a
+fsearch_qt_client: /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/../target/release/libfsearch_core.a
 fsearch_qt_client: /usr/lib/libpcre2-8.so
 fsearch_qt_client: /usr/lib/libQt6Gui.so.6.10.1
 fsearch_qt_client: /usr/lib/libGLX.so
 fsearch_qt_client: /usr/lib/libOpenGL.so
 fsearch_qt_client: /usr/lib/libQt6Core.so.6.10.1
 fsearch_qt_client: CMakeFiles/fsearch_qt_client.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable fsearch_qt_client"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking CXX executable fsearch_qt_client"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/fsearch_qt_client.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -138,6 +170,6 @@ CMakeFiles/fsearch_qt_client.dir/clean:
 .PHONY : CMakeFiles/fsearch_qt_client.dir/clean
 
 CMakeFiles/fsearch_qt_client.dir/depend: fsearch_qt_client_autogen/timestamp
-	cd /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build/CMakeFiles/fsearch_qt_client.dir/DependInfo.cmake "--color=$(COLOR)" fsearch_qt_client
+	cd /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/build /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/build /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/build/CMakeFiles/fsearch_qt_client.dir/DependInfo.cmake "--color=$(COLOR)" fsearch_qt_client
 .PHONY : CMakeFiles/fsearch_qt_client.dir/depend
 

@@ -31,6 +31,15 @@ void fsearch_index_list_entries_c(void *idx, fsearch_result_cb_t cb, void *userd
 
 uint64_t fsearch_start_search_c(const char *query);
 uint64_t fsearch_start_search_with_cb_c(const char *query, fsearch_result_cb_t cb, void *userdata);
+// Explicit search options structure.
+typedef struct {
+	uint32_t max_results; // 0 == unlimited
+	int32_t case_sensitive; // 0 == false, non-zero == true
+	int32_t use_regex; // 0 == false, non-zero == true (treat query as regex)
+} fsearch_search_options_t;
+
+// Start a search with explicit options. `opts` may be NULL to use defaults.
+uint64_t fsearch_start_search_with_opts_c(const char *query, const fsearch_search_options_t *opts, fsearch_result_cb_t cb, void *userdata);
 void fsearch_poll_results_c(uint64_t handle, fsearch_result_cb_t cb, void *userdata);
 void fsearch_cancel_search_c(uint64_t handle);
 void fsearch_shutdown(void);

@@ -53,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client
+CMAKE_SOURCE_DIR = /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build
+CMAKE_BINARY_DIR = /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/build
 
 # Utility rule file for fsearch_qt_integration_test_autogen_timestamp_deps.
 
@@ -81,6 +81,6 @@ CMakeFiles/fsearch_qt_integration_test_autogen_timestamp_deps.dir/clean:
 .PHONY : CMakeFiles/fsearch_qt_integration_test_autogen_timestamp_deps.dir/clean
 
 CMakeFiles/fsearch_qt_integration_test_autogen_timestamp_deps.dir/depend:
-	cd /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build/CMakeFiles/fsearch_qt_integration_test_autogen_timestamp_deps.dir/DependInfo.cmake "--color=$(COLOR)" fsearch_qt_integration_test_autogen_timestamp_deps
+	cd /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/build /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/build /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/build/CMakeFiles/fsearch_qt_integration_test_autogen_timestamp_deps.dir/DependInfo.cmake "--color=$(COLOR)" fsearch_qt_integration_test_autogen_timestamp_deps
 .PHONY : CMakeFiles/fsearch_qt_integration_test_autogen_timestamp_deps.dir/depend
 

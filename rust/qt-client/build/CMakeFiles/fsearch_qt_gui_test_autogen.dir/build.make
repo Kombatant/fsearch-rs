@@ -53,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client
+CMAKE_SOURCE_DIR = /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build
+CMAKE_BINARY_DIR = /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/build
 
 # Utility rule file for fsearch_qt_gui_test_autogen.
 
@@ -70,9 +70,9 @@ CMakeFiles/fsearch_qt_gui_test_autogen: fsearch_qt_gui_test_autogen/timestamp
 
 fsearch_qt_gui_test_autogen/timestamp: /usr/lib/qt6/moc
 fsearch_qt_gui_test_autogen/timestamp: CMakeFiles/fsearch_qt_gui_test_autogen.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Automatic MOC for target fsearch_qt_gui_test"
-	/usr/bin/cmake -E cmake_autogen /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build/CMakeFiles/fsearch_qt_gui_test_autogen.dir/AutogenInfo.json RelWithDebInfo
-	/usr/bin/cmake -E touch /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build/fsearch_qt_gui_test_autogen/timestamp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Automatic MOC for target fsearch_qt_gui_test"
+	/usr/bin/cmake -E cmake_autogen /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/build/CMakeFiles/fsearch_qt_gui_test_autogen.dir/AutogenInfo.json Release
+	/usr/bin/cmake -E touch /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/build/fsearch_qt_gui_test_autogen/timestamp
 
 CMakeFiles/fsearch_qt_gui_test_autogen.dir/codegen:
 .PHONY : CMakeFiles/fsearch_qt_gui_test_autogen.dir/codegen
@@ -91,6 +91,6 @@ CMakeFiles/fsearch_qt_gui_test_autogen.dir/clean:
 .PHONY : CMakeFiles/fsearch_qt_gui_test_autogen.dir/clean
 
 CMakeFiles/fsearch_qt_gui_test_autogen.dir/depend:
-	cd /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build/CMakeFiles/fsearch_qt_gui_test_autogen.dir/DependInfo.cmake "--color=$(COLOR)" fsearch_qt_gui_test_autogen
+	cd /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/build /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/build /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/build/CMakeFiles/fsearch_qt_gui_test_autogen.dir/DependInfo.cmake "--color=$(COLOR)" fsearch_qt_gui_test_autogen
 .PHONY : CMakeFiles/fsearch_qt_gui_test_autogen.dir/depend
 

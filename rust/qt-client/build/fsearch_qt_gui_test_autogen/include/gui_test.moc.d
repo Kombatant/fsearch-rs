@@ -1,6 +1,6 @@
-/home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build/fsearch_qt_gui_test_autogen/include/gui_test.moc: /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/tests/gui_test.cpp \
-  /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build/fsearch_qt_gui_test_autogen/moc_predefs.h \
-  /home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/fsearch-core/include/fsearch_ffi.h \
+/home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/build/fsearch_qt_gui_test_autogen/include/gui_test.moc: /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/tests/gui_test.cpp \
+  /home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/build/fsearch_qt_gui_test_autogen/moc_predefs.h \
+  /home/kombatant/Dev/languages/fsearch-rs/rust/fsearch-core/include/fsearch_ffi.h \
   /usr/include/alloca.h \
   /usr/include/asm-generic/bitsperlong.h \
   /usr/include/asm-generic/errno-base.h \
@@ -288,6 +288,7 @@
   /usr/include/qt6/QtCore/QMargins \
   /usr/include/qt6/QtCore/QMetaEnum \
   /usr/include/qt6/QtCore/QObject \
+  /usr/include/qt6/QtCore/QPointer \
   /usr/include/qt6/QtCore/QRect \
   /usr/include/qt6/QtCore/QSize \
   /usr/include/qt6/QtCore/QSizeF \

@@ -1,0 +1,11 @@
+/home/kombatant/Dev/languages/fsearch-rs/rust/target/debug/deps/foldhash-3ef5e1405ec923af.d: /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/foldhash-0.2.0/src/lib.rs /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/foldhash-0.2.0/src/fast.rs /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/foldhash-0.2.0/src/quality.rs /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/foldhash-0.2.0/src/seed.rs /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/foldhash-0.2.0/src/convenience.rs
+
+/home/kombatant/Dev/languages/fsearch-rs/rust/target/debug/deps/libfoldhash-3ef5e1405ec923af.rlib: /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/foldhash-0.2.0/src/lib.rs /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/foldhash-0.2.0/src/fast.rs /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/foldhash-0.2.0/src/quality.rs /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/foldhash-0.2.0/src/seed.rs /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/foldhash-0.2.0/src/convenience.rs
+
+/home/kombatant/Dev/languages/fsearch-rs/rust/target/debug/deps/libfoldhash-3ef5e1405ec923af.rmeta: /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/foldhash-0.2.0/src/lib.rs /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/foldhash-0.2.0/src/fast.rs /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/foldhash-0.2.0/src/quality.rs /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/foldhash-0.2.0/src/seed.rs /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/foldhash-0.2.0/src/convenience.rs
+
+/home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/foldhash-0.2.0/src/lib.rs:
+/home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/foldhash-0.2.0/src/fast.rs:
+/home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/foldhash-0.2.0/src/quality.rs:
+/home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/foldhash-0.2.0/src/seed.rs:
+/home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/foldhash-0.2.0/src/convenience.rs:

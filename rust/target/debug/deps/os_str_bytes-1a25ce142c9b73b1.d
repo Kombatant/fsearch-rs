@@ -1,0 +1,10 @@
+/home/kombatant/Dev/languages/fsearch-rs/rust/target/debug/deps/os_str_bytes-1a25ce142c9b73b1.d: /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/os_str_bytes-6.6.1/src/lib.rs /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/os_str_bytes-6.6.1/src/common/mod.rs /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/os_str_bytes-6.6.1/src/common/raw.rs /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/os_str_bytes-6.6.1/src/iter.rs /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/os_str_bytes-6.6.1/src/pattern.rs /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/os_str_bytes-6.6.1/src/raw_str.rs
+
+/home/kombatant/Dev/languages/fsearch-rs/rust/target/debug/deps/libos_str_bytes-1a25ce142c9b73b1.rmeta: /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/os_str_bytes-6.6.1/src/lib.rs /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/os_str_bytes-6.6.1/src/common/mod.rs /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/os_str_bytes-6.6.1/src/common/raw.rs /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/os_str_bytes-6.6.1/src/iter.rs /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/os_str_bytes-6.6.1/src/pattern.rs /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/os_str_bytes-6.6.1/src/raw_str.rs
+
+/home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/os_str_bytes-6.6.1/src/lib.rs:
+/home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/os_str_bytes-6.6.1/src/common/mod.rs:
+/home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/os_str_bytes-6.6.1/src/common/raw.rs:
+/home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/os_str_bytes-6.6.1/src/iter.rs:
+/home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/os_str_bytes-6.6.1/src/pattern.rs:
+/home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/os_str_bytes-6.6.1/src/raw_str.rs:

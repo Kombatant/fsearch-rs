@@ -4,7 +4,7 @@
 #define __UINT_LEAST16_MAX__ 0xffff
 #define __FLT16_HAS_QUIET_NAN__ 1
 #define __ATOMIC_ACQUIRE 2
-#define QT_TESTCASE_BUILDDIR "/home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build"
+#define QT_TESTCASE_BUILDDIR "/home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/build"
 #define __FLT128_MAX_10_EXP__ 4932
 #define __FLT_MIN__ 1.17549435082228750796873653722224568e-38F
 #define __GCC_IEC_559_COMPLEX 2
@@ -185,7 +185,7 @@
 #define __SIZEOF_WINT_T__ 4
 #define __FLT32X_DIG__ 15
 #define __LONG_LONG_WIDTH__ 64
-#define QT_TESTCASE_SOURCEDIR "/home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client"
+#define QT_TESTCASE_SOURCEDIR "/home/kombatant/Dev/languages/fsearch-rs/rust/qt-client"
 #define __cpp_initializer_lists 200806L
 #define __FLT32_MAX_EXP__ 128
 #define ABI_ID "ELF"

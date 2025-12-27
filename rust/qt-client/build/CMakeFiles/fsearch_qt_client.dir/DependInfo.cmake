@@ -9,8 +9,10 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "" "fsearch_qt_client_autogen/timestamp" "custom" "fsearch_qt_client_autogen/deps"
-  "/home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/build/fsearch_qt_client_autogen/mocs_compilation.cpp" "CMakeFiles/fsearch_qt_client.dir/fsearch_qt_client_autogen/mocs_compilation.cpp.o" "gcc" "CMakeFiles/fsearch_qt_client.dir/fsearch_qt_client_autogen/mocs_compilation.cpp.o.d"
-  "/home/kombatant/unraid/cloud/googledrive/dev/languages/fsearch-rs/rust/qt-client/main.cpp" "CMakeFiles/fsearch_qt_client.dir/main.cpp.o" "gcc" "CMakeFiles/fsearch_qt_client.dir/main.cpp.o.d"
+  "/home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/filter_editor.cpp" "CMakeFiles/fsearch_qt_client.dir/filter_editor.cpp.o" "gcc" "CMakeFiles/fsearch_qt_client.dir/filter_editor.cpp.o.d"
+  "/home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/build/fsearch_qt_client_autogen/mocs_compilation.cpp" "CMakeFiles/fsearch_qt_client.dir/fsearch_qt_client_autogen/mocs_compilation.cpp.o" "gcc" "CMakeFiles/fsearch_qt_client.dir/fsearch_qt_client_autogen/mocs_compilation.cpp.o.d"
+  "/home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/main.cpp" "CMakeFiles/fsearch_qt_client.dir/main.cpp.o" "gcc" "CMakeFiles/fsearch_qt_client.dir/main.cpp.o.d"
+  "/home/kombatant/Dev/languages/fsearch-rs/rust/qt-client/preferences.cpp" "CMakeFiles/fsearch_qt_client.dir/preferences.cpp.o" "gcc" "CMakeFiles/fsearch_qt_client.dir/preferences.cpp.o.d"
   "" "fsearch_qt_client" "gcc" "CMakeFiles/fsearch_qt_client.dir/link.d"
   )
 

@@ -6,7 +6,7 @@ set(CMAKE_AUTOMOC ON)
 find_package(Qt6 COMPONENTS Widgets REQUIRED)
 find_package(Qt6 COMPONENTS Test REQUIRED)
 
-add_executable(fsearch_qt_client main.cpp)
+add_executable(fsearch_qt_client main.cpp preferences.cpp filter_editor.cpp)
 target_link_libraries(fsearch_qt_client PRIVATE Qt6::Widgets)
 
 # Adjust include and link paths as needed for the Rust staticlib output

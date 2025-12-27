@@ -1,0 +1,12 @@
+/home/kombatant/Dev/languages/fsearch-rs/rust/target/debug/deps/half-5ef7509c7cb22ce5.d: /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/half-2.7.1/src/lib.rs /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/half-2.7.1/src/bfloat.rs /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/half-2.7.1/src/bfloat/convert.rs /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/half-2.7.1/src/binary16.rs /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/half-2.7.1/src/binary16/arch.rs /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/half-2.7.1/src/binary16/arch/x86.rs /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/half-2.7.1/src/leading_zeros.rs /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/half-2.7.1/src/slice.rs
+
+/home/kombatant/Dev/languages/fsearch-rs/rust/target/debug/deps/libhalf-5ef7509c7cb22ce5.rmeta: /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/half-2.7.1/src/lib.rs /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/half-2.7.1/src/bfloat.rs /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/half-2.7.1/src/bfloat/convert.rs /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/half-2.7.1/src/binary16.rs /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/half-2.7.1/src/binary16/arch.rs /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/half-2.7.1/src/binary16/arch/x86.rs /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/half-2.7.1/src/leading_zeros.rs /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/half-2.7.1/src/slice.rs
+
+/home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/half-2.7.1/src/lib.rs:
+/home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/half-2.7.1/src/bfloat.rs:
+/home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/half-2.7.1/src/bfloat/convert.rs:
+/home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/half-2.7.1/src/binary16.rs:
+/home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/half-2.7.1/src/binary16/arch.rs:
+/home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/half-2.7.1/src/binary16/arch/x86.rs:
+/home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/half-2.7.1/src/leading_zeros.rs:
+/home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/half-2.7.1/src/slice.rs:

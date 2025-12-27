@@ -101,6 +101,13 @@ pub fn cancel_search(_handle: u64) {
 use std::ffi::CStr;
 use std::os::raw::{c_char, c_void};
 
+#[repr(C)]
+pub struct FsearchSearchOptions {
+    pub max_results: u32,
+    pub case_sensitive: i32,
+    pub use_regex: i32,
+}
+
 #[no_mangle]
 pub extern "C" fn fsearch_init() -> bool {
     init()
@@ -174,6 +181,24 @@ pub extern "C" fn fsearch_start_search_with_cb_c(query: *const c_char, cb: Optio
         let cbf = cb.unwrap();
         // delegate to search module which will spawn a worker and invoke cb
         return search_mod::start_search_with_index_and_cb(idx.clone(), &q, cbf, userdata);
+    }
+    0
+}
+
+#[no_mangle]
+pub extern "C" fn fsearch_start_search_with_opts_c(query: *const c_char, opts: *const FsearchSearchOptions, cb: Option<FsearchResultCb>, userdata: *mut c_void) -> u64 {
+    if query.is_null() || cb.is_none() {
+        return 0;
+    }
+    let q = unsafe { CStr::from_ptr(query).to_string_lossy().into_owned() };
+    let mut options = None;
+    if !opts.is_null() {
+        let o = unsafe { &*opts };
+        options = Some((o.max_results as usize, o.case_sensitive != 0, o.use_regex != 0));
+    }
+    if let Some(idx) = &*CURRENT_INDEX.lock() {
+        let cbf = cb.unwrap();
+        return search_mod::start_search_with_index_and_cb_opts(idx.clone(), &q, cbf, userdata, options);
     }
     0
 }

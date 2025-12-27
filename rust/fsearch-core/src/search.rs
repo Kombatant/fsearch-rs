@@ -465,6 +465,126 @@ pub fn start_search_with_index_and_cb(idx: Arc<Index>, query: &str, cb: extern "
     id
 }
 
+/// Variant of start_search that accepts explicit options.
+/// `opts` is (max_results, case_sensitive, use_regex)
+pub fn start_search_with_index_and_cb_opts(
+    idx: Arc<Index>,
+    query: &str,
+    cb: extern "C" fn(u64, *const std::os::raw::c_char, *const std::os::raw::c_char, u64, u64, *const std::os::raw::c_char, *mut std::os::raw::c_void),
+    userdata: *mut std::os::raw::c_void,
+    opts: Option<(usize, bool, bool)>,
+) -> u64 {
+    let cancel = Arc::new(AtomicBool::new(false));
+    let cancel_clone = cancel.clone();
+    let q = query.to_string();
+    let id = next_handle_id();
+    let userdata_usize = userdata as usize;
+
+    let max_results = opts.map(|o| o.0).unwrap_or(0);
+    let opt_case_sensitive = opts.map(|o| o.1).unwrap_or(false);
+    let opt_use_regex = opts.map(|o| o.2).unwrap_or(false);
+
+    // Spawn worker thread that calls cb directly for matches.
+    let join = std::thread::spawn(move || {
+        if idx.entries.is_empty() { return; }
+
+        // Determine working query string and flags
+        let mut q_work = q.as_str();
+        let case_sensitive = opt_case_sensitive;
+        let mut is_regex = opt_use_regex;
+        if !is_regex && q_work.starts_with("re:") {
+            is_regex = true;
+            q_work = &q_work[3..];
+        }
+
+        let mut compiled_opt: Option<crate::query::matcher::CompiledNode> = None;
+        let pool = PatternPool::new();
+        if let Ok(mut parser) = std::panic::catch_unwind(|| Parser::new(q_work)) {
+            if let Some(node) = parser.parse() {
+                if let Ok(comp) = QueryMatcher::new(pool.clone()).compile(&node) {
+                    compiled_opt = Some(comp);
+                }
+            }
+        }
+
+        // prepare regex/substring fallback
+        let pattern = q_work.to_string();
+        let regex: Option<regex::Regex> = if is_regex {
+            let mut builder = regex::RegexBuilder::new(&pattern);
+            builder.case_insensitive(!case_sensitive);
+            builder.build().ok()
+        } else { None };
+        let lower_pat = pattern.to_lowercase();
+
+        let mut sent = 0usize;
+
+        for e in idx.entries.iter() {
+            if cancel_clone.load(Ordering::SeqCst) { break; }
+            if let Some(compiled) = &compiled_opt {
+                if QueryMatcher::new(pool.clone()).is_match_entry(compiled, e) {
+                    let text = format!("{}\n{}", e.name, e.path);
+                    let metas = QueryMatcher::new(pool.clone()).captures_meta(compiled, text.as_bytes());
+                    let compiled_field = match compiled {
+                        crate::query::matcher::CompiledNode::Leaf { field, .. } => field.clone(),
+                        crate::query::matcher::CompiledNode::Compare { field, .. } => field.clone(),
+                        crate::query::matcher::CompiledNode::Range { field, .. } => field.clone(),
+                        _ => None,
+                    };
+                    let mut parts = Vec::new();
+                    for mut m in metas {
+                        if m.field.is_none() {
+                            m.field = compiled_field.clone();
+                        }
+                        let mut ranges_parts = Vec::new();
+                        for (a,b) in m.ranges {
+                            let (su, eu) = byte_range_to_utf16_bounds(&text, a, b);
+                            ranges_parts.push(format!("[{},{}]", su, eu));
+                        }
+                        let field_json = match m.field { Some(f) => format!("\"{}\"", f), None => "null".to_string() };
+                        parts.push(format!("{{\"field\":{},\"ranges\":[{}]}}", field_json, ranges_parts.join(",")));
+                    }
+                    let highlights = format!("[{}]", parts.join(","));
+                    let name_c = std::ffi::CString::new(e.name.clone()).unwrap_or_default();
+                    let path_c = std::ffi::CString::new(e.path.clone()).unwrap_or_default();
+                    let highlights_c = std::ffi::CString::new(highlights).unwrap_or_default();
+                    let ud = userdata_usize as *mut std::os::raw::c_void;
+                    cb(e.id, name_c.as_ptr(), path_c.as_ptr(), e.size, e.mtime, highlights_c.as_ptr(), ud);
+                    sent += 1;
+                    if max_results != 0 && sent >= max_results {
+                        // reached requested limit
+                        break;
+                    }
+                }
+            } else {
+                let matched = if let Some(re) = &regex {
+                    re.is_match(&e.path) || re.is_match(&e.name)
+                } else {
+                    if case_sensitive {
+                        e.name.contains(&pattern) || e.path.contains(&pattern)
+                    } else {
+                        e.normalized.contains(&lower_pat) || e.path.to_lowercase().contains(&lower_pat)
+                    }
+                };
+                if matched {
+                    let name_c = std::ffi::CString::new(e.name.clone()).unwrap_or_default();
+                    let path_c = std::ffi::CString::new(e.path.clone()).unwrap_or_default();
+                    let highlights_c = std::ffi::CString::new("".to_string()).unwrap_or_default();
+                    let ud = userdata_usize as *mut std::os::raw::c_void;
+                    cb(e.id, name_c.as_ptr(), path_c.as_ptr(), e.size, e.mtime, highlights_c.as_ptr(), ud);
+                    sent += 1;
+                    if max_results != 0 && sent >= max_results {
+                        break;
+                    }
+                }
+            }
+        }
+    });
+
+    let ctx = SearchContext { receiver: crossbeam_channel::unbounded().1 /*unused*/, cancel_flag: cancel, join_handle: Some(join) };
+    HANDLE_MAP.lock().insert(id, ctx);
+    id
+}
+
 pub fn poll_results(handle: u64) -> Vec<FfiSearchResult> {
     let mut out = Vec::new();
     let map = HANDLE_MAP.lock();

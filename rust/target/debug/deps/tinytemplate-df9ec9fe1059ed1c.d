@@ -1,0 +1,10 @@
+/home/kombatant/Dev/languages/fsearch-rs/rust/target/debug/deps/tinytemplate-df9ec9fe1059ed1c.d: /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tinytemplate-1.2.1/src/lib.rs /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tinytemplate-1.2.1/src/compiler.rs /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tinytemplate-1.2.1/src/error.rs /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tinytemplate-1.2.1/src/instruction.rs /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tinytemplate-1.2.1/src/syntax.rs /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tinytemplate-1.2.1/src/template.rs
+
+/home/kombatant/Dev/languages/fsearch-rs/rust/target/debug/deps/libtinytemplate-df9ec9fe1059ed1c.rmeta: /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tinytemplate-1.2.1/src/lib.rs /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tinytemplate-1.2.1/src/compiler.rs /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tinytemplate-1.2.1/src/error.rs /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tinytemplate-1.2.1/src/instruction.rs /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tinytemplate-1.2.1/src/syntax.rs /home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tinytemplate-1.2.1/src/template.rs
+
+/home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tinytemplate-1.2.1/src/lib.rs:
+/home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tinytemplate-1.2.1/src/compiler.rs:
+/home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tinytemplate-1.2.1/src/error.rs:
+/home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tinytemplate-1.2.1/src/instruction.rs:
+/home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tinytemplate-1.2.1/src/syntax.rs:
+/home/kombatant/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tinytemplate-1.2.1/src/template.rs:
